@@ -1,0 +1,264 @@
+﻿.ax_default {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  letter-spacing:normal;
+  color:#333333;
+  vertical-align:none;
+  text-align:center;
+  line-height:normal;
+  text-transform:none;
+}
+._图片_ {
+}
+._一级标题 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:32px;
+  text-align:left;
+}
+._二级标题 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:24px;
+  text-align:left;
+}
+._三级标题 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:18px;
+  text-align:left;
+}
+._四级标题 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:14px;
+  text-align:left;
+}
+._五级标题 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  text-align:left;
+}
+._六级标题 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:10px;
+  text-align:left;
+}
+._文本段落 {
+  text-align:left;
+}
+._表单提示 {
+  color:#999999;
+}
+._表单禁用 {
+}
+.example_script {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:28px;
+  color:#000000;
+}
+.form_hint {
+  color:#666666;
+}
+._图片 {
+}
+.image {
+}
+.box_1 {
+}
+._形状 {
+}
+.text_field {
+  color:#000000;
+  text-align:left;
+}
+.droplist {
+  color:#000000;
+  text-align:left;
+}
+._流程形状 {
+}
+._线段 {
+}
+.form_hint1 {
+  color:#999999;
+}
+.form_disabled {
+}
+.icon {
+}
+.line {
+}
+.ellipse {
+}
+.label {
+  font-size:14px;
+  text-align:left;
+}
+.box_11 {
+}
+.paragraph {
+  text-align:left;
+}
+.box_3 {
+}
+.marker {
+  color:#FFFFFF;
+}
+.button {
+}
+.primary_button {
+  color:#FFFFFF;
+}
+.box_2 {
+}
+.box_21 {
+}
+.refs-chart-data {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:400;
+  font-style:normal;
+}
+.shape {
+  font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:12px;
+  color:#FFFFFF;
+  text-align:center;
+  line-height:normal;
+}
+.label1 {
+  font-size:14px;
+  text-align:left;
+}
+.heading_1 {
+  font-family:'Arial Negreta', 'Arial Normal', 'Arial', sans-serif;
+  font-weight:700;
+  font-style:normal;
+  font-size:32px;
+  text-align:left;
+}
+.shape1 {
+}
+.box_22 {
+}
+.flow_shape {
+}
+._默认样式 {
+}
+._文本链接 {
+  color:#0000FF;
+}
+.paragraph1 {
+  text-align:left;
+}
+.heading_2 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:24px;
+  text-align:left;
+}
+.table_cell {
+}
+._形状1 {
+}
+._形状2 {
+  font-family:'Arial Negreta', 'Arial Normal', 'Arial', sans-serif;
+  font-weight:700;
+  font-style:normal;
+  color:#FF0066;
+}
+.box_23 {
+}
+.label2 {
+  font-size:14px;
+  text-align:left;
+}
+._形状3 {
+  font-family:'Microsoft YaHei UI Bold', 'Microsoft YaHei UI', sans-serif;
+  font-weight:700;
+  font-style:normal;
+  font-size:12px;
+  color:#FF0066;
+}
+._文本段落1 {
+  text-align:left;
+}
+.shape2 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  color:#333333;
+  text-align:center;
+  line-height:normal;
+}
+.label3 {
+  font-size:14px;
+  text-align:left;
+}
+.text_area {
+  color:#000000;
+  text-align:left;
+}
+.table_cell1 {
+}
+.menu_item {
+}
+.sticky_1 {
+  text-align:left;
+}
+._连接 {
+}
+.radio_button {
+  text-align:left;
+}
+._图片1 {
+}
+.list_box {
+  color:#000000;
+  text-align:left;
+}
+._形状4 {
+  font-family:'Microsoft YaHei UI Bold', 'Microsoft YaHei UI', sans-serif;
+  font-weight:700;
+  font-style:normal;
+  color:#FF0066;
+}
+.box_31 {
+}
+.placeholder {
+}
+.line1 {
+}
+.box_12 {
+}
+.heading_3 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:18px;
+  text-align:left;
+}
+.checkbox {
+  text-align:left;
+}
+._图像 {
+}
+.image1 {
+  color:#000000;
+}
+textarea, select, input, button { outline: none; }

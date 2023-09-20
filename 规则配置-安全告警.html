@@ -1,0 +1,3803 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>规则配置-安全告警</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/规则配置-安全告警/styles.css" type="text/css" rel="stylesheet"/>
+    <style type="text/css">
+@font-face {
+/**
+ * Created by AxurePro on 2020/3/26.
+ * Axure.js,为解析echarts代码使用
+ * 文件博航
+ */
+//}</style>
+<script type="text/javascript">
+window.open = window.open;
+window.open = function () {
+
+    function init() {
+        if (window.$) {
+            $(document).ready(function () {
+                setTimeout(function () {
+                    window.open('javascript:');
+                }, 0);
+            });
+        } else {
+            setTimeout(init, 0);
+        }
+    }
+
+    setTimeout(init, 0);
+    if (typeof String.prototype.trim !== "function") {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, "");
+        };
+    }
+
+    function startSplitMouse(evt) {
+        if ( opts.outline )
+            zombie = zombie || bar.clone(false).insertAfter(A);
+        panes.css("-webkit-user-select", "none");   // Safari selects A/B text on a move
+        bar.addClass(opts.activeClass);
+        $('<div class="splitterMask"></div>').insertAfter(bar);
+        A._posSplit = A[0][opts.pxSplit] - evt[opts.eventPos];
+        $(document)
+            .bind("mousemove", doSplitMouse)
+            .bind("mouseup", endSplitMouse);
+    }
+    var showwindow = window.open;
+    var showdialog = function (echartcode, itemname, value, data) {
+        if (data !== undefined) return showwindow(echartcode, itemname, value, data);
+        if (value !== undefined) return showwindow(echartcode, itemname, value);
+        if (itemname !== undefined) return showwindow(echartcode, itemname);
+        return showwindow(echartcode);
+    };
+    return function (echartcode, itemname, value, data) {
+        if ((echartcode.substring(0, 11) !== "javascript:") || (!$axure)) {
+            if (window.openReplace) {
+                window.openReplace = false;
+                window.location.replace(echartcode);
+                return false;
+            }
+            return showdialog(echartcode, itemname, value, data);
+        }
+        function doSplitMouse(evt) {
+            var newPos = A._posSplit+evt[opts.eventPos];
+            if ( opts.outline ) {
+                newPos = Math.max(0, Math.min(newPos, splitter._DA - bar._DA));
+                bar.css(opts.origin, newPos);
+            } else
+                resplit(newPos);
+        }
+        function endSplitMouse(evt) {
+            $('div.splitterMask').remove();
+            bar.removeClass(opts.activeClass);
+            var newPos = A._posSplit+evt[opts.eventPos];
+            if ( opts.outline ) {
+                zombie.remove(); zombie = null;
+                resplit(newPos);
+            }
+            panes.css("-webkit-user-select", "text");   // let Safari select text again
+            $(document)
+                .unbind("mousemove", doSplitMouse)
+                .unbind("mouseup", endSplitMouse);
+        }
+        function resplit(newPos) {
+            // Constrain new splitbar position to fit pane size limits
+            newPos = Math.max(A._min, splitter._DA - B._max,
+                Math.min(newPos, A._max, splitter._DA - bar._DA - B._min));
+            // Resize/position the two panes
+            bar._DA = bar[0][opts.pxSplit];      // bar size may change during dock
+
+            var posOffset = bar.is(':visible') ? bar._DA - 1 : 0;
+
+            bar.css(opts.origin, newPos - posOffset).css(opts.fixed, splitter._DF);
+            A.css(opts.origin, 0).css(opts.split, newPos).css(opts.fixed,  splitter._DF);
+            B.css(opts.origin, newPos + bar._DA - posOffset)
+                .css(opts.split, splitter._DA-bar._DA-newPos).css(opts.fixed,  splitter._DF);
+            // IE fires resize for us; all others pay cash
+            if ( !IE_10_AND_BELOW )
+                panes.trigger("resize");
+        }
+
+        var htmlcode = echartcode.substring(11).trim();
+        if (false && console) console.log("** " + htmlcode + " **\n");
+        if ((htmlcode[0] === '/') && (htmlcode[1] === '/')) return false;
+        if ((htmlcode[0] == '@') || (htmlcode[0] == '#')) {
+
+            var src = htmlcode.split(":");
+            htmlcode = $axure(src[0].trim()).text();
+            if (!htmlcode) return $axure.error('Widget "' + src[0] + '" not found.');
+            var l = htmlcode.split(':');
+            htmlcode = htmlcode.replace("[[" + l[0].trim() + "]]", JSON.stringify(l.slice(1).join(':')).slice(1, -1).replace("'", "\\'"));
+            if (src.length > 1) {
+                var canvas = $axure(src[1].trim()).$().children("iframe")[0];
+                if (!canvas) return $axure.error('Widget InlineFrame "' + src[1] + '" not found.');
+                canvas = (canvas.contentWindow ? canvas.contentWindow : canvas.contentDocument.document ? canvas.contentDocument.document : canvas.contentDocument).document;
+                canvas.open("text/html", "replace");
+                canvas.write(htmlcode);
+                canvas.close();
+                return false;
+            }
+        }
+        function dimSum(jq, dims) {
+            // Opera returns -1 for missing min/max width, turn into 0
+            var sum = 0;
+            for ( var i=1; i < arguments.length; i++ )
+                sum += Math.max(parseInt(jq.css(arguments[i])) || 0, 0);
+            return sum;
+        }
+        if (htmlcode !== '') {
+            if ($axure.debug) htmlcode = eval(htmlcode); else try {
+                htmlcode = eval(htmlcode);
+            } catch (err) {
+                return $axure.error("Exception:\n" + err + "\n\nTrace:\n" + err.stack + "\n\nScript:\n" + htmlcode.slice(0, 1024));
+            }
+            if (htmlcode) return showdialog('javascript: ' + JSON.stringify(htmlcode) + ';', itemname, value, data);
+        }
+        return false;
+    };
+    function getInitialUrl() {
+        var pageName = getHashStringVar("p");
+        if(pageName.length > 0) return pageName + ".html";
+        else {
+            var url = getFirstPageUrl($axure.document.sitemap.rootNodes);
+            return (url ? url : "about:blank");
+        }
+    }
+
+    function getFirstPageUrl(nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            if (node.url) return node.url;
+            else {
+                var hasChildren = (node.children && node.children.length > 0);
+                if (hasChildren) {
+                    var url = getFirstPageUrl(node.children);
+                    if (url) return url;
+                }
+            }
+        }
+        return null;
+    }
+
+}();
+//</script>
+<style type="text/css">{
+}
+    </style>
+    <script src="resources/scripts/jquery-3.2.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/规则配置-安全告警/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10975" class="ax_default box_1">
+        <div id="u10975_div" class=""></div>
+        <div id="u10975_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 上框 (矩形) -->
+      <div id="u10976" class="ax_default box_1" data-label="上框">
+        <div id="u10976_div" class=""></div>
+        <div id="u10976_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10977" class="ax_default _文本段落">
+        <div id="u10977_div" class=""></div>
+        <div id="u10977_text" class="text ">
+          <p><span>系统管理</span><span> / </span><span>告警规则配置</span><span> / </span><span>电能质量告警</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10978" class="ax_default _文本段落">
+        <div id="u10978_div" class=""></div>
+        <div id="u10978_text" class="text ">
+          <p><span>欢迎</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u10979" class="ax_default icon">
+        <img id="u10979_img" class="img " src="images/实时监测-计量仪表/u548.svg"/>
+        <div id="u10979_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (EMS-顶部栏) -->
+
+      <!-- 主菜单 (动态面板) -->
+      <div id="u10981" class="ax_default" data-label="主菜单">
+        <div id="u10981_state0" class="panel_state" data-label="State1" style="">
+          <div id="u10981_state0_content" class="panel_state_content">
+
+            <!-- 能耗统计-顶部 (矩形) -->
+            <div id="u10982" class="ax_default _文本段落" data-label="能耗统计-顶部" selectiongroup="u10980T-Menu">
+              <img id="u10982_img" class="img " src="images/综合概览-大屏/能耗统计-顶部_u3.svg"/>
+              <div id="u10982_text" class="text ">
+                <p><span>能耗统计</span></p>
+              </div>
+            </div>
+
+            <!-- 实时监控-顶部 (矩形) -->
+            <div id="u10983" class="ax_default _文本段落" data-label="实时监控-顶部" selectiongroup="u10980T-Menu">
+              <img id="u10983_img" class="img " src="images/综合概览-大屏/实时监控-顶部_u4.svg"/>
+              <div id="u10983_text" class="text ">
+                <p><span>实时监控</span></p>
+              </div>
+            </div>
+
+            <!-- 综合概览-顶部 (矩形) -->
+            <div id="u10984" class="ax_default _文本段落" data-label="综合概览-顶部" selectiongroup="u10980T-Menu">
+              <img id="u10984_img" class="img " src="images/综合概览-大屏/实时监控-顶部_u4.svg"/>
+              <div id="u10984_text" class="text ">
+                <p><span>综合概览</span></p>
+              </div>
+            </div>
+
+            <!-- 能效分析-顶部 (矩形) -->
+            <div id="u10985" class="ax_default _文本段落" data-label="能效分析-顶部" selectiongroup="u10980T-Menu">
+              <div id="u10985_div" class=""></div>
+              <div id="u10985_text" class="text ">
+                <p><span>能效分析</span></p>
+              </div>
+            </div>
+
+            <!-- 系统管理-顶部 (矩形) -->
+            <div id="u10986" class="ax_default _文本段落" data-label="系统管理-顶部" selectiongroup="u10980T-Menu">
+              <div id="u10986_div" class=""></div>
+              <div id="u10986_text" class="text ">
+                <p><span>系统管理</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="u10980" style="display:none; visibility:hidden;"></div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10987" class="ax_default label1">
+        <div id="u10987_div" class=""></div>
+        <div id="u10987_text" class="text ">
+          <p><span style="color:#70B603;">EMS </span><span style="color:#FFFFFF;">智慧能源管理系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (文本框) -->
+      <div id="u10988" class="ax_default text_field disabled">
+        <div id="u10988_div" class="disabled"></div>
+        <input id="u10988_input" type="text" value="LOGO" class="u10988_input" disabled/>
+      </div>
+
+      <!-- Unnamed (下拉列表) -->
+      <div id="u10989" class="ax_default droplist">
+        <div id="u10989_div" class=""></div>
+        <select id="u10989_input" class="u10989_input">
+          <option class="u10989_input_option" selected value="admin">admin</option>
+          <option class="u10989_input_option" value="账号信息">账号信息</option>
+          <option class="u10989_input_option" value="修改密码">修改密码</option>
+          <option class="u10989_input_option" value="退出登录">退出登录</option>
+        </select>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u10990" class="ax_default" data-left="1683" data-top="20" data-width="20" data-height="20">
+
+        <!-- Unnamed (形状) -->
+        <div id="u10991" class="ax_default _形状">
+          <img id="u10991_img" class="img " src="images/实时监测-计量仪表/u560.svg"/>
+          <div id="u10991_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10992" class="ax_default _形状">
+          <img id="u10992_img" class="img " src="images/实时监测-计量仪表/u561.svg"/>
+          <div id="u10992_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10993" class="ax_default _形状">
+          <img id="u10993_img" class="img " src="images/实时监测-计量仪表/u562.svg"/>
+          <div id="u10993_text" class="text ">
+            <p><span>2</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10994" class="ax_default _形状">
+          <img id="u10994_img" class="img " src="images/实时监测-计量仪表/u563.svg"/>
+          <div id="u10994_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10995" class="ax_default _形状">
+          <img id="u10995_img" class="img " src="images/实时监测-计量仪表/u564.svg"/>
+          <div id="u10995_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10996" class="ax_default _形状">
+          <img id="u10996_img" class="img " src="images/实时监测-计量仪表/u565.svg"/>
+          <div id="u10996_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (动态面板) -->
+      <div id="u10997" class="ax_default">
+        <div id="u10997_state0" class="panel_state" data-label="State1" style="">
+          <div id="u10997_state0_content" class="panel_state_content">
+
+            <!-- Unnamed (矩形) -->
+            <div id="u10998" class="ax_default box_1">
+              <div id="u10998_div" class=""></div>
+              <div id="u10998_text" class="text " style="display:none; visibility: hidden">
+                <p></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u10999" class="ax_default box_1">
+              <div id="u10999_div" class=""></div>
+              <div id="u10999_text" class="text ">
+                <p><span>单元分区导航</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11000" class="ax_default box_1">
+              <div id="u11000_div" class=""></div>
+              <div id="u11000_text" class="text " style="display:none; visibility: hidden">
+                <p></p>
+              </div>
+            </div>
+
+            <!-- 组织信息查询框 (矩形) -->
+            <div id="u11001" class="ax_default shape1" data-label="组织信息查询框">
+              <div id="u11001_div" class=""></div>
+              <div id="u11001_text" class="text " style="display:none; visibility: hidden">
+                <p></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (形状) -->
+            <div id="u11002" class="ax_default _形状">
+              <img id="u11002_img" class="img " src="images/实时监测-计量仪表/u501.svg"/>
+              <div id="u11002_text" class="text " style="display:none; visibility: hidden">
+                <p></p>
+              </div>
+            </div>
+
+            <!-- 组织输入005 (文本框) -->
+            <div id="u11003" class="ax_default text_field" data-label="组织输入005">
+              <div id="u11003_div" class=""></div>
+              <input id="u11003_input" type="text" value="" class="u11003_input"/>
+            </div>
+
+            <!-- 关闭 (组合) -->
+            <div id="u11004" class="ax_default ax_default_hidden" data-label="关闭" style="display:none; visibility: hidden" data-left="236" data-top="94" data-width="15" data-height="15">
+
+              <!-- Unnamed (圆形) -->
+              <div id="u11005" class="ax_default ellipse">
+                <img id="u11005_img" class="img " src="images/实时监测-计量仪表/u504.svg"/>
+                <div id="u11005_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11006" class="ax_default icon">
+                <img id="u11006_img" class="img " src="images/实时监测-计量仪表/u505.svg"/>
+                <div id="u11006_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11007" class="ax_default box_1">
+              <div id="u11007_div" class=""></div>
+              <div id="u11007_text" class="text ">
+                <p><span>安全告警设置</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11008" class="ax_default shape1" selectiongroup="分页">
+              <div id="u11008_div" class=""></div>
+              <div id="u11008_text" class="text ">
+                <p><span>下一页</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11009" class="ax_default shape1" selectiongroup="分页">
+              <div id="u11009_div" class=""></div>
+              <div id="u11009_text" class="text ">
+                <p><span>上一页</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11010" class="ax_default shape1" selectiongroup="分页">
+              <div id="u11010_div" class=""></div>
+              <div id="u11010_text" class="text ">
+                <p><span>首页</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11011" class="ax_default shape1" selectiongroup="分页">
+              <div id="u11011_div" class=""></div>
+              <div id="u11011_text" class="text ">
+                <p><span>尾页</span></p>
+              </div>
+            </div>
+
+            <!-- C行数设置 (下拉列表) -->
+            <div id="u11012" class="ax_default droplist" data-label="C行数设置">
+              <div id="u11012_div" class=""></div>
+              <select id="u11012_input" class="u11012_input">
+                <option class="u11012_input_option" value="10">10</option>
+                <option class="u11012_input_option" value="20">20</option>
+                <option class="u11012_input_option" value="50">50</option>
+                <option class="u11012_input_option" value="100">100</option>
+              </select>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11013" class="ax_default _三级标题">
+              <div id="u11013_div" class=""></div>
+              <div id="u11013_text" class="text ">
+                <p><span>行/页</span></p>
+              </div>
+            </div>
+
+            <!-- 电表安全配置 (动态面板) -->
+            <div id="u11014" class="ax_default" data-label="电表安全配置">
+              <div id="u11014_state0" class="panel_state" data-label="State1" style="">
+                <div id="u11014_state0_content" class="panel_state_content">
+
+                  <!-- 电表安全阈值中继器 (中继器) -->
+                  <div id="u11015" class="ax_default" data-label="电表安全阈值中继器">
+                    <script id="u11015_script" type="axure-repeater-template" data-label="电表安全阈值中继器">
+
+                      <!-- 删除-yz (矩形) -->
+                      <div id="u11016" class="ax_default box_1 u11016" data-label="删除-yz">
+                        <div id="u11016_div" class="u11016_div"></div>
+                        <div id="u11016_text" class="text u11016_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置-yz (矩形) -->
+                      <div id="u11017" class="ax_default box_1 u11017" data-label="配置-yz">
+                        <div id="u11017_div" class="u11017_div"></div>
+                        <div id="u11017_text" class="text u11017_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 序号_aq (矩形) -->
+                      <div id="u11018" class="ax_default box_1 u11018" data-label="序号_aq">
+                        <div id="u11018_div" class="u11018_div"></div>
+                        <div id="u11018_text" class="text u11018_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表名称_aq (矩形) -->
+                      <div id="u11019" class="ax_default box_1 u11019" data-label="仪表名称_aq">
+                        <div id="u11019_div" class="u11019_div"></div>
+                        <div id="u11019_text" class="text u11019_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表编号_aq (矩形) -->
+                      <div id="u11020" class="ax_default box_1 u11020" data-label="仪表编号_aq">
+                        <div id="u11020_div" class="u11020_div"></div>
+                        <div id="u11020_text" class="text u11020_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 单元分区_aq (矩形) -->
+                      <div id="u11021" class="ax_default box_1 u11021" data-label="单元分区_aq">
+                        <div id="u11021_div" class="u11021_div"></div>
+                        <div id="u11021_text" class="text u11021_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表类型_aq (矩形) -->
+                      <div id="u11022" class="ax_default box_1 u11022" data-label="仪表类型_aq">
+                        <div id="u11022_div" class="u11022_div"></div>
+                        <div id="u11022_text" class="text u11022_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置说明_aq (矩形) -->
+                      <div id="u11023" class="ax_default box_1 u11023" data-label="配置说明_aq">
+                        <div id="u11023_div" class="u11023_div"></div>
+                        <div id="u11023_text" class="text u11023_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+                    </script>
+                    <div id="u11015-1" class="" style="width: 1270px; height: 40px;">
+
+                      <!-- 删除-yz (矩形) -->
+                      <div id="u11016-1" class="ax_default box_1 u11016" data-label="删除-yz" style="width: 111px; height: 40px; left: 1159px; top: 0px;visibility: inherit">
+                        <div id="u11016-1_div" class="u11016_div" style="width: 111px; height: 40px;visibility: inherit"></div>
+                        <div id="u11016-1_text" class="text u11016_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置-yz (矩形) -->
+                      <div id="u11017-1" class="ax_default box_1 u11017" data-label="配置-yz" style="width: 80px; height: 40px; left: 1079px; top: 0px;visibility: inherit">
+                        <div id="u11017-1_div" class="u11017_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                        <div id="u11017-1_text" class="text u11017_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 序号_aq (矩形) -->
+                      <div id="u11018-1" class="ax_default box_1 u11018" data-label="序号_aq" style="width: 79px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                        <div id="u11018-1_div" class="u11018_div" style="width: 79px; height: 40px;visibility: inherit"></div>
+                        <div id="u11018-1_text" class="text u11018_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表名称_aq (矩形) -->
+                      <div id="u11019-1" class="ax_default box_1 u11019" data-label="仪表名称_aq" style="width: 180px; height: 40px; left: 419px; top: 0px;visibility: inherit">
+                        <div id="u11019-1_div" class="u11019_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11019-1_text" class="text u11019_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表编号_aq (矩形) -->
+                      <div id="u11020-1" class="ax_default box_1 u11020" data-label="仪表编号_aq" style="width: 180px; height: 40px; left: 239px; top: 0px;visibility: inherit">
+                        <div id="u11020-1_div" class="u11020_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11020-1_text" class="text u11020_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 单元分区_aq (矩形) -->
+                      <div id="u11021-1" class="ax_default box_1 u11021" data-label="单元分区_aq" style="width: 160px; height: 40px; left: 79px; top: 0px;visibility: inherit">
+                        <div id="u11021-1_div" class="u11021_div" style="width: 160px; height: 40px;visibility: inherit"></div>
+                        <div id="u11021-1_text" class="text u11021_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表类型_aq (矩形) -->
+                      <div id="u11022-1" class="ax_default box_1 u11022" data-label="仪表类型_aq" style="width: 120px; height: 40px; left: 599px; top: 0px;visibility: inherit">
+                        <div id="u11022-1_div" class="u11022_div" style="width: 120px; height: 40px;visibility: inherit"></div>
+                        <div id="u11022-1_text" class="text u11022_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置说明_aq (矩形) -->
+                      <div id="u11023-1" class="ax_default box_1 u11023" data-label="配置说明_aq" style="width: 360px; height: 40px; left: 719px; top: 0px;visibility: inherit">
+                        <div id="u11023-1_div" class="u11023_div" style="width: 360px; height: 40px;visibility: inherit"></div>
+                        <div id="u11023-1_text" class="text u11023_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="u11015-2" class="" style="width: 1270px; height: 40px;">
+
+                      <!-- 删除-yz (矩形) -->
+                      <div id="u11016-2" class="ax_default box_1 u11016" data-label="删除-yz" style="width: 111px; height: 40px; left: 1159px; top: 0px;visibility: inherit">
+                        <div id="u11016-2_div" class="u11016_div" style="width: 111px; height: 40px;visibility: inherit"></div>
+                        <div id="u11016-2_text" class="text u11016_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置-yz (矩形) -->
+                      <div id="u11017-2" class="ax_default box_1 u11017" data-label="配置-yz" style="width: 80px; height: 40px; left: 1079px; top: 0px;visibility: inherit">
+                        <div id="u11017-2_div" class="u11017_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                        <div id="u11017-2_text" class="text u11017_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 序号_aq (矩形) -->
+                      <div id="u11018-2" class="ax_default box_1 u11018" data-label="序号_aq" style="width: 79px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                        <div id="u11018-2_div" class="u11018_div" style="width: 79px; height: 40px;visibility: inherit"></div>
+                        <div id="u11018-2_text" class="text u11018_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表名称_aq (矩形) -->
+                      <div id="u11019-2" class="ax_default box_1 u11019" data-label="仪表名称_aq" style="width: 180px; height: 40px; left: 419px; top: 0px;visibility: inherit">
+                        <div id="u11019-2_div" class="u11019_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11019-2_text" class="text u11019_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表编号_aq (矩形) -->
+                      <div id="u11020-2" class="ax_default box_1 u11020" data-label="仪表编号_aq" style="width: 180px; height: 40px; left: 239px; top: 0px;visibility: inherit">
+                        <div id="u11020-2_div" class="u11020_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11020-2_text" class="text u11020_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 单元分区_aq (矩形) -->
+                      <div id="u11021-2" class="ax_default box_1 u11021" data-label="单元分区_aq" style="width: 160px; height: 40px; left: 79px; top: 0px;visibility: inherit">
+                        <div id="u11021-2_div" class="u11021_div" style="width: 160px; height: 40px;visibility: inherit"></div>
+                        <div id="u11021-2_text" class="text u11021_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表类型_aq (矩形) -->
+                      <div id="u11022-2" class="ax_default box_1 u11022" data-label="仪表类型_aq" style="width: 120px; height: 40px; left: 599px; top: 0px;visibility: inherit">
+                        <div id="u11022-2_div" class="u11022_div" style="width: 120px; height: 40px;visibility: inherit"></div>
+                        <div id="u11022-2_text" class="text u11022_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置说明_aq (矩形) -->
+                      <div id="u11023-2" class="ax_default box_1 u11023" data-label="配置说明_aq" style="width: 360px; height: 40px; left: 719px; top: 0px;visibility: inherit">
+                        <div id="u11023-2_div" class="u11023_div" style="width: 360px; height: 40px;visibility: inherit"></div>
+                        <div id="u11023-2_text" class="text u11023_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="u11015-3" class="" style="width: 1270px; height: 40px;">
+
+                      <!-- 删除-yz (矩形) -->
+                      <div id="u11016-3" class="ax_default box_1 u11016" data-label="删除-yz" style="width: 111px; height: 40px; left: 1159px; top: 0px;visibility: inherit">
+                        <div id="u11016-3_div" class="u11016_div" style="width: 111px; height: 40px;visibility: inherit"></div>
+                        <div id="u11016-3_text" class="text u11016_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置-yz (矩形) -->
+                      <div id="u11017-3" class="ax_default box_1 u11017" data-label="配置-yz" style="width: 80px; height: 40px; left: 1079px; top: 0px;visibility: inherit">
+                        <div id="u11017-3_div" class="u11017_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                        <div id="u11017-3_text" class="text u11017_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 序号_aq (矩形) -->
+                      <div id="u11018-3" class="ax_default box_1 u11018" data-label="序号_aq" style="width: 79px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                        <div id="u11018-3_div" class="u11018_div" style="width: 79px; height: 40px;visibility: inherit"></div>
+                        <div id="u11018-3_text" class="text u11018_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表名称_aq (矩形) -->
+                      <div id="u11019-3" class="ax_default box_1 u11019" data-label="仪表名称_aq" style="width: 180px; height: 40px; left: 419px; top: 0px;visibility: inherit">
+                        <div id="u11019-3_div" class="u11019_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11019-3_text" class="text u11019_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表编号_aq (矩形) -->
+                      <div id="u11020-3" class="ax_default box_1 u11020" data-label="仪表编号_aq" style="width: 180px; height: 40px; left: 239px; top: 0px;visibility: inherit">
+                        <div id="u11020-3_div" class="u11020_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11020-3_text" class="text u11020_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 单元分区_aq (矩形) -->
+                      <div id="u11021-3" class="ax_default box_1 u11021" data-label="单元分区_aq" style="width: 160px; height: 40px; left: 79px; top: 0px;visibility: inherit">
+                        <div id="u11021-3_div" class="u11021_div" style="width: 160px; height: 40px;visibility: inherit"></div>
+                        <div id="u11021-3_text" class="text u11021_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表类型_aq (矩形) -->
+                      <div id="u11022-3" class="ax_default box_1 u11022" data-label="仪表类型_aq" style="width: 120px; height: 40px; left: 599px; top: 0px;visibility: inherit">
+                        <div id="u11022-3_div" class="u11022_div" style="width: 120px; height: 40px;visibility: inherit"></div>
+                        <div id="u11022-3_text" class="text u11022_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置说明_aq (矩形) -->
+                      <div id="u11023-3" class="ax_default box_1 u11023" data-label="配置说明_aq" style="width: 360px; height: 40px; left: 719px; top: 0px;visibility: inherit">
+                        <div id="u11023-3_div" class="u11023_div" style="width: 360px; height: 40px;visibility: inherit"></div>
+                        <div id="u11023-3_text" class="text u11023_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="u11015-4" class="" style="width: 1270px; height: 40px;">
+
+                      <!-- 删除-yz (矩形) -->
+                      <div id="u11016-4" class="ax_default box_1 u11016" data-label="删除-yz" style="width: 111px; height: 40px; left: 1159px; top: 0px;visibility: inherit">
+                        <div id="u11016-4_div" class="u11016_div" style="width: 111px; height: 40px;visibility: inherit"></div>
+                        <div id="u11016-4_text" class="text u11016_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置-yz (矩形) -->
+                      <div id="u11017-4" class="ax_default box_1 u11017" data-label="配置-yz" style="width: 80px; height: 40px; left: 1079px; top: 0px;visibility: inherit">
+                        <div id="u11017-4_div" class="u11017_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                        <div id="u11017-4_text" class="text u11017_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 序号_aq (矩形) -->
+                      <div id="u11018-4" class="ax_default box_1 u11018" data-label="序号_aq" style="width: 79px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                        <div id="u11018-4_div" class="u11018_div" style="width: 79px; height: 40px;visibility: inherit"></div>
+                        <div id="u11018-4_text" class="text u11018_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表名称_aq (矩形) -->
+                      <div id="u11019-4" class="ax_default box_1 u11019" data-label="仪表名称_aq" style="width: 180px; height: 40px; left: 419px; top: 0px;visibility: inherit">
+                        <div id="u11019-4_div" class="u11019_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11019-4_text" class="text u11019_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表编号_aq (矩形) -->
+                      <div id="u11020-4" class="ax_default box_1 u11020" data-label="仪表编号_aq" style="width: 180px; height: 40px; left: 239px; top: 0px;visibility: inherit">
+                        <div id="u11020-4_div" class="u11020_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11020-4_text" class="text u11020_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 单元分区_aq (矩形) -->
+                      <div id="u11021-4" class="ax_default box_1 u11021" data-label="单元分区_aq" style="width: 160px; height: 40px; left: 79px; top: 0px;visibility: inherit">
+                        <div id="u11021-4_div" class="u11021_div" style="width: 160px; height: 40px;visibility: inherit"></div>
+                        <div id="u11021-4_text" class="text u11021_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表类型_aq (矩形) -->
+                      <div id="u11022-4" class="ax_default box_1 u11022" data-label="仪表类型_aq" style="width: 120px; height: 40px; left: 599px; top: 0px;visibility: inherit">
+                        <div id="u11022-4_div" class="u11022_div" style="width: 120px; height: 40px;visibility: inherit"></div>
+                        <div id="u11022-4_text" class="text u11022_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置说明_aq (矩形) -->
+                      <div id="u11023-4" class="ax_default box_1 u11023" data-label="配置说明_aq" style="width: 360px; height: 40px; left: 719px; top: 0px;visibility: inherit">
+                        <div id="u11023-4_div" class="u11023_div" style="width: 360px; height: 40px;visibility: inherit"></div>
+                        <div id="u11023-4_text" class="text u11023_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="u11015-5" class="" style="width: 1270px; height: 40px;">
+
+                      <!-- 删除-yz (矩形) -->
+                      <div id="u11016-5" class="ax_default box_1 u11016" data-label="删除-yz" style="width: 111px; height: 40px; left: 1159px; top: 0px;visibility: inherit">
+                        <div id="u11016-5_div" class="u11016_div" style="width: 111px; height: 40px;visibility: inherit"></div>
+                        <div id="u11016-5_text" class="text u11016_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置-yz (矩形) -->
+                      <div id="u11017-5" class="ax_default box_1 u11017" data-label="配置-yz" style="width: 80px; height: 40px; left: 1079px; top: 0px;visibility: inherit">
+                        <div id="u11017-5_div" class="u11017_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                        <div id="u11017-5_text" class="text u11017_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 序号_aq (矩形) -->
+                      <div id="u11018-5" class="ax_default box_1 u11018" data-label="序号_aq" style="width: 79px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                        <div id="u11018-5_div" class="u11018_div" style="width: 79px; height: 40px;visibility: inherit"></div>
+                        <div id="u11018-5_text" class="text u11018_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表名称_aq (矩形) -->
+                      <div id="u11019-5" class="ax_default box_1 u11019" data-label="仪表名称_aq" style="width: 180px; height: 40px; left: 419px; top: 0px;visibility: inherit">
+                        <div id="u11019-5_div" class="u11019_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11019-5_text" class="text u11019_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表编号_aq (矩形) -->
+                      <div id="u11020-5" class="ax_default box_1 u11020" data-label="仪表编号_aq" style="width: 180px; height: 40px; left: 239px; top: 0px;visibility: inherit">
+                        <div id="u11020-5_div" class="u11020_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                        <div id="u11020-5_text" class="text u11020_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 单元分区_aq (矩形) -->
+                      <div id="u11021-5" class="ax_default box_1 u11021" data-label="单元分区_aq" style="width: 160px; height: 40px; left: 79px; top: 0px;visibility: inherit">
+                        <div id="u11021-5_div" class="u11021_div" style="width: 160px; height: 40px;visibility: inherit"></div>
+                        <div id="u11021-5_text" class="text u11021_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 仪表类型_aq (矩形) -->
+                      <div id="u11022-5" class="ax_default box_1 u11022" data-label="仪表类型_aq" style="width: 120px; height: 40px; left: 599px; top: 0px;visibility: inherit">
+                        <div id="u11022-5_div" class="u11022_div" style="width: 120px; height: 40px;visibility: inherit"></div>
+                        <div id="u11022-5_text" class="text u11022_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+
+                      <!-- 配置说明_aq (矩形) -->
+                      <div id="u11023-5" class="ax_default box_1 u11023" data-label="配置说明_aq" style="width: 360px; height: 40px; left: 719px; top: 0px;visibility: inherit">
+                        <div id="u11023-5_div" class="u11023_div" style="width: 360px; height: 40px;visibility: inherit"></div>
+                        <div id="u11023-5_text" class="text u11023_text" style="display:none; visibility: hidden">
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11024" class="ax_default _三级标题">
+              <div id="u11024_div" class=""></div>
+              <div id="u11024_text" class="text ">
+                <p><span>页</span></p>
+              </div>
+            </div>
+
+            <!-- 分页提示-cb (矩形) -->
+            <div id="u11025" class="ax_default _三级标题" data-label="分页提示-cb">
+              <div id="u11025_div" class=""></div>
+              <div id="u11025_text" class="text ">
+                <p><span>当前显示&nbsp; 条/共&nbsp;&nbsp; 条，第 页/共 页</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11026" class="ax_default box_1">
+              <div id="u11026_div" class=""></div>
+              <div id="u11026_text" class="text ">
+                <p><span>仪表编号</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11027" class="ax_default box_1">
+              <div id="u11027_div" class=""></div>
+              <div id="u11027_text" class="text ">
+                <p><span>仪表名称</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11028" class="ax_default box_1">
+              <div id="u11028_div" class=""></div>
+              <div id="u11028_text" class="text ">
+                <p><span>操作</span></p>
+              </div>
+            </div>
+
+            <!-- 输入页码 (文本框) -->
+            <div id="u11029" class="ax_default text_field" data-label="输入页码">
+              <div id="u11029_div" class=""></div>
+              <input id="u11029_input" type="text" value="" class="u11029_input"/>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11030" class="ax_default box_1">
+              <div id="u11030_div" class=""></div>
+              <div id="u11030_text" class="text ">
+                <p><span>单元分区</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11031" class="ax_default box_1">
+              <div id="u11031_div" class=""></div>
+              <div id="u11031_text" class="text ">
+                <p><span>仪表类型</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11032" class="ax_default box_1">
+              <div id="u11032_div" class=""></div>
+              <div id="u11032_text" class="text ">
+                <p><span>序号</span></p>
+              </div>
+            </div>
+
+            <!-- Unnamed (组合) -->
+            <div id="u11033" class="ax_default" data-left="1425" data-top="80" data-width="80" data-height="30">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11034" class="ax_default box_11">
+                <div id="u11034_div" class=""></div>
+                <div id="u11034_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11035" class="ax_default _三级标题">
+                <div id="u11035_div" class=""></div>
+                <div id="u11035_text" class="text ">
+                  <p><span>查询</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11036" class="ax_default _形状">
+                <img id="u11036_img" class="img " src="images/实时监测-计量仪表/u501_mouseOver.svg"/>
+                <div id="u11036_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unnamed (组合) -->
+            <div id="u11037" class="ax_default" selectiongroup="分区树" data-left="1535" data-top="80" data-width="80" data-height="30">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11038" class="ax_default box_11">
+                <div id="u11038_div" class=""></div>
+                <div id="u11038_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11039" class="ax_default _三级标题">
+                <div id="u11039_div" class=""></div>
+                <div id="u11039_text" class="text ">
+                  <p><span>重置</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11040" class="ax_default icon">
+                <img id="u11040_img" class="img " src="images/告警中心-设备故障/u2844.svg"/>
+                <div id="u11040_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11041" class="ax_default _二级标题">
+              <div id="u11041_div" class=""></div>
+              <div id="u11041_text" class="text ">
+                <p><span>仪表编号：</span></p>
+              </div>
+            </div>
+
+            <!-- 仪表名称-al (文本框) -->
+            <div id="u11042" class="ax_default text_field" data-label="仪表名称-al">
+              <div id="u11042_div" class=""></div>
+              <input id="u11042_input" type="text" value="" class="u11042_input"/>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11043" class="ax_default _二级标题">
+              <div id="u11043_div" class=""></div>
+              <div id="u11043_text" class="text ">
+                <p><span>仪表名称：</span></p>
+              </div>
+            </div>
+
+            <!-- 仪表编号-al (文本框) -->
+            <div id="u11044" class="ax_default text_field" data-label="仪表编号-al">
+              <div id="u11044_div" class=""></div>
+              <input id="u11044_input" type="text" value="" class="u11044_input"/>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u11045" class="ax_default box_1">
+              <div id="u11045_div" class=""></div>
+              <div id="u11045_text" class="text ">
+                <p><span>备注说明</span></p>
+              </div>
+            </div>
+
+            <!-- 隔离罩-告警配置 (矩形) -->
+            <div id="u11046" class="ax_default box_11" data-label="隔离罩-告警配置">
+              <div id="u11046_div" class=""></div>
+              <div id="u11046_text" class="text " style="display:none; visibility: hidden">
+                <p></p>
+              </div>
+            </div>
+
+            <!-- 电能质量-告警配置 (组合) -->
+            <div id="u11047" class="ax_default" data-label="电能质量-告警配置" data-left="40" data-top="985" data-width="680" data-height="580">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11048" class="ax_default box_1">
+                <div id="u11048_div" class=""></div>
+                <div id="u11048_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (组合) -->
+              <div id="u11049" class="ax_default" data-left="485" data-top="1505" data-width="80" data-height="30">
+
+                <!-- Unnamed (矩形) -->
+                <div id="u11050" class="ax_default box_11">
+                  <div id="u11050_div" class=""></div>
+                  <div id="u11050_text" class="text " style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u11051" class="ax_default _三级标题">
+                  <div id="u11051_div" class=""></div>
+                  <div id="u11051_text" class="text ">
+                    <p><span>取消</span></p>
+                  </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u11052" class="ax_default icon">
+                  <img id="u11052_img" class="img " src="images/告警中心-用能预警/u3118.svg"/>
+                  <div id="u11052_text" class="text " style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unnamed (组合) -->
+              <div id="u11053" class="ax_default" data-left="610" data-top="1505" data-width="80" data-height="30">
+
+                <!-- Unnamed (矩形) -->
+                <div id="u11054" class="ax_default box_11">
+                  <div id="u11054_div" class=""></div>
+                  <div id="u11054_text" class="text " style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- Unnamed (矩形) -->
+                <div id="u11055" class="ax_default _三级标题">
+                  <div id="u11055_div" class=""></div>
+                  <div id="u11055_text" class="text ">
+                    <p><span>保存</span></p>
+                  </div>
+                </div>
+
+                <!-- Unnamed (形状) -->
+                <div id="u11056" class="ax_default icon">
+                  <img id="u11056_img" class="img " src="images/告警中心-用能预警/u3122.svg"/>
+                  <div id="u11056_text" class="text " style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11057" class="ax_default box_1">
+                <div id="u11057_div" class=""></div>
+                <div id="u11057_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 标题-新增仪表 (矩形) -->
+              <div id="u11058" class="ax_default label3" data-label="标题-新增仪表">
+                <div id="u11058_div" class=""></div>
+                <div id="u11058_text" class="text ">
+                  <p><span>用电安全告警参数配置</span></p>
+                </div>
+              </div>
+
+              <!-- 告警参数 (动态面板) -->
+              <div id="u11059" class="ax_default" data-label="告警参数">
+                <div id="u11059_state0" class="panel_state" data-label="电压" style="">
+                  <div id="u11059_state0_content" class="panel_state_content">
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11060" class="ax_default box_1">
+                      <div id="u11060_div" class=""></div>
+                      <div id="u11060_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11061" class="ax_default label3">
+                      <div id="u11061_div" class=""></div>
+                      <div id="u11061_text" class="text ">
+                        <p><span>A相电压</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11062" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11062_div" class=""></div>
+                      <input id="u11062_input" type="text" value="" class="u11062_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11063" class="ax_default _文本段落">
+                      <div id="u11063_div" class=""></div>
+                      <div id="u11063_text" class="text ">
+                        <p><span>电压告警阈值设置（V）</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 上框 (矩形) -->
+                    <div id="u11064" class="ax_default box_1" data-label="上框">
+                      <div id="u11064_div" class=""></div>
+                      <div id="u11064_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11065" class="ax_default box_1">
+                      <div id="u11065_div" class=""></div>
+                      <div id="u11065_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11066" class="ax_default label">
+                      <div id="u11066_div" class=""></div>
+                      <div id="u11066_text" class="text ">
+                        <p><span>参数类型</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11067" class="ax_default label">
+                      <div id="u11067_div" class=""></div>
+                      <div id="u11067_text" class="text ">
+                        <p><span>上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11068" class="ax_default label">
+                      <div id="u11068_div" class=""></div>
+                      <div id="u11068_text" class="text ">
+                        <p><span>上上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11069" class="ax_default label">
+                      <div id="u11069_div" class=""></div>
+                      <div id="u11069_text" class="text ">
+                        <p><span>下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11070" class="ax_default label">
+                      <div id="u11070_div" class=""></div>
+                      <div id="u11070_text" class="text ">
+                        <p><span>下下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11071" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11071_div" class=""></div>
+                      <input id="u11071_input" type="text" value="" class="u11071_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11072" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11072_div" class=""></div>
+                      <input id="u11072_input" type="text" value="" class="u11072_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11073" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11073_div" class=""></div>
+                      <input id="u11073_input" type="text" value="" class="u11073_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11074" class="ax_default box_1">
+                      <div id="u11074_div" class=""></div>
+                      <div id="u11074_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11075" class="ax_default label3">
+                      <div id="u11075_div" class=""></div>
+                      <div id="u11075_text" class="text ">
+                        <p><span>B相电压</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11076" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11076_div" class=""></div>
+                      <input id="u11076_input" type="text" value="" class="u11076_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11077" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11077_div" class=""></div>
+                      <input id="u11077_input" type="text" value="" class="u11077_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11078" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11078_div" class=""></div>
+                      <input id="u11078_input" type="text" value="" class="u11078_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11079" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11079_div" class=""></div>
+                      <input id="u11079_input" type="text" value="" class="u11079_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11080" class="ax_default box_1">
+                      <div id="u11080_div" class=""></div>
+                      <div id="u11080_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11081" class="ax_default label3">
+                      <div id="u11081_div" class=""></div>
+                      <div id="u11081_text" class="text ">
+                        <p><span>C相电压</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11082" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11082_div" class=""></div>
+                      <input id="u11082_input" type="text" value="" class="u11082_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11083" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11083_div" class=""></div>
+                      <input id="u11083_input" type="text" value="" class="u11083_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11084" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11084_div" class=""></div>
+                      <input id="u11084_input" type="text" value="" class="u11084_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11085" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11085_div" class=""></div>
+                      <input id="u11085_input" type="text" value="" class="u11085_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11086" class="ax_default box_1">
+                      <div id="u11086_div" class=""></div>
+                      <div id="u11086_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11087" class="ax_default label3">
+                      <div id="u11087_div" class=""></div>
+                      <div id="u11087_text" class="text ">
+                        <p><span>AB线电压</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11088" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11088_div" class=""></div>
+                      <input id="u11088_input" type="text" value="" class="u11088_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11089" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11089_div" class=""></div>
+                      <input id="u11089_input" type="text" value="" class="u11089_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11090" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11090_div" class=""></div>
+                      <input id="u11090_input" type="text" value="" class="u11090_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11091" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11091_div" class=""></div>
+                      <input id="u11091_input" type="text" value="" class="u11091_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11092" class="ax_default box_1">
+                      <div id="u11092_div" class=""></div>
+                      <div id="u11092_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11093" class="ax_default label3">
+                      <div id="u11093_div" class=""></div>
+                      <div id="u11093_text" class="text ">
+                        <p><span>BC线电压</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11094" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11094_div" class=""></div>
+                      <input id="u11094_input" type="text" value="" class="u11094_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11095" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11095_div" class=""></div>
+                      <input id="u11095_input" type="text" value="" class="u11095_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11096" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11096_div" class=""></div>
+                      <input id="u11096_input" type="text" value="" class="u11096_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11097" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11097_div" class=""></div>
+                      <input id="u11097_input" type="text" value="" class="u11097_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11098" class="ax_default box_1">
+                      <div id="u11098_div" class=""></div>
+                      <div id="u11098_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11099" class="ax_default label3">
+                      <div id="u11099_div" class=""></div>
+                      <div id="u11099_text" class="text ">
+                        <p><span>CA线电压</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11100" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11100_div" class=""></div>
+                      <input id="u11100_input" type="text" value="" class="u11100_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11101" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11101_div" class=""></div>
+                      <input id="u11101_input" type="text" value="" class="u11101_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11102" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11102_div" class=""></div>
+                      <input id="u11102_input" type="text" value="" class="u11102_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11103" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11103_div" class=""></div>
+                      <input id="u11103_input" type="text" value="" class="u11103_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11104" class="ax_default label">
+                      <div id="u11104_div" class=""></div>
+                      <div id="u11104_text" class="text ">
+                        <p><span>备注说明</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11105" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11105_div" class=""></div>
+                      <input id="u11105_input" type="text" value="" class="u11105_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11106" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11106_div" class=""></div>
+                      <input id="u11106_input" type="text" value="" class="u11106_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11107" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11107_div" class=""></div>
+                      <input id="u11107_input" type="text" value="" class="u11107_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11108" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11108_div" class=""></div>
+                      <input id="u11108_input" type="text" value="" class="u11108_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11109" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11109_div" class=""></div>
+                      <input id="u11109_input" type="text" value="" class="u11109_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11110" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11110_div" class=""></div>
+                      <input id="u11110_input" type="text" value="" class="u11110_input"/>
+                    </div>
+                  </div>
+                </div>
+                <div id="u11059_state1" class="panel_state" data-label="电流" style="visibility: hidden;">
+                  <div id="u11059_state1_content" class="panel_state_content">
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11111" class="ax_default box_1">
+                      <div id="u11111_div" class=""></div>
+                      <div id="u11111_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11112" class="ax_default label3">
+                      <div id="u11112_div" class=""></div>
+                      <div id="u11112_text" class="text ">
+                        <p><span>A相电流</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11113" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11113_div" class=""></div>
+                      <input id="u11113_input" type="text" value="" class="u11113_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11114" class="ax_default _文本段落">
+                      <div id="u11114_div" class=""></div>
+                      <div id="u11114_text" class="text ">
+                        <p><span>电流告警阈值设置（A）</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 上框 (矩形) -->
+                    <div id="u11115" class="ax_default box_1" data-label="上框">
+                      <div id="u11115_div" class=""></div>
+                      <div id="u11115_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11116" class="ax_default box_1">
+                      <div id="u11116_div" class=""></div>
+                      <div id="u11116_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11117" class="ax_default label">
+                      <div id="u11117_div" class=""></div>
+                      <div id="u11117_text" class="text ">
+                        <p><span>参数类型</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11118" class="ax_default label">
+                      <div id="u11118_div" class=""></div>
+                      <div id="u11118_text" class="text ">
+                        <p><span>上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11119" class="ax_default label">
+                      <div id="u11119_div" class=""></div>
+                      <div id="u11119_text" class="text ">
+                        <p><span>上上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11120" class="ax_default label">
+                      <div id="u11120_div" class=""></div>
+                      <div id="u11120_text" class="text ">
+                        <p><span>下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11121" class="ax_default label">
+                      <div id="u11121_div" class=""></div>
+                      <div id="u11121_text" class="text ">
+                        <p><span>下下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11122" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11122_div" class=""></div>
+                      <input id="u11122_input" type="text" value="" class="u11122_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11123" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11123_div" class=""></div>
+                      <input id="u11123_input" type="text" value="" class="u11123_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11124" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11124_div" class=""></div>
+                      <input id="u11124_input" type="text" value="" class="u11124_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11125" class="ax_default box_1">
+                      <div id="u11125_div" class=""></div>
+                      <div id="u11125_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11126" class="ax_default label3">
+                      <div id="u11126_div" class=""></div>
+                      <div id="u11126_text" class="text ">
+                        <p><span>B相电流</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11127" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11127_div" class=""></div>
+                      <input id="u11127_input" type="text" value="" class="u11127_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11128" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11128_div" class=""></div>
+                      <input id="u11128_input" type="text" value="" class="u11128_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11129" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11129_div" class=""></div>
+                      <input id="u11129_input" type="text" value="" class="u11129_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11130" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11130_div" class=""></div>
+                      <input id="u11130_input" type="text" value="" class="u11130_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11131" class="ax_default box_1">
+                      <div id="u11131_div" class=""></div>
+                      <div id="u11131_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11132" class="ax_default label3">
+                      <div id="u11132_div" class=""></div>
+                      <div id="u11132_text" class="text ">
+                        <p><span>C相电流</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11133" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11133_div" class=""></div>
+                      <input id="u11133_input" type="text" value="" class="u11133_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11134" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11134_div" class=""></div>
+                      <input id="u11134_input" type="text" value="" class="u11134_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11135" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11135_div" class=""></div>
+                      <input id="u11135_input" type="text" value="" class="u11135_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11136" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11136_div" class=""></div>
+                      <input id="u11136_input" type="text" value="" class="u11136_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11137" class="ax_default label">
+                      <div id="u11137_div" class=""></div>
+                      <div id="u11137_text" class="text ">
+                        <p><span>备注说明</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11138" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11138_div" class=""></div>
+                      <input id="u11138_input" type="text" value="" class="u11138_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11139" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11139_div" class=""></div>
+                      <input id="u11139_input" type="text" value="" class="u11139_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11140" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11140_div" class=""></div>
+                      <input id="u11140_input" type="text" value="" class="u11140_input"/>
+                    </div>
+                  </div>
+                </div>
+                <div id="u11059_state2" class="panel_state" data-label="有功功率" style="visibility: hidden;">
+                  <div id="u11059_state2_content" class="panel_state_content">
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11141" class="ax_default box_1">
+                      <div id="u11141_div" class=""></div>
+                      <div id="u11141_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11142" class="ax_default label3">
+                      <div id="u11142_div" class=""></div>
+                      <div id="u11142_text" class="text ">
+                        <p><span>A相有功功率</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11143" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11143_div" class=""></div>
+                      <input id="u11143_input" type="text" value="" class="u11143_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11144" class="ax_default _文本段落">
+                      <div id="u11144_div" class=""></div>
+                      <div id="u11144_text" class="text ">
+                        <p><span>有功功率告警阈值设置（kW）</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 上框 (矩形) -->
+                    <div id="u11145" class="ax_default box_1" data-label="上框">
+                      <div id="u11145_div" class=""></div>
+                      <div id="u11145_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11146" class="ax_default box_1">
+                      <div id="u11146_div" class=""></div>
+                      <div id="u11146_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11147" class="ax_default label">
+                      <div id="u11147_div" class=""></div>
+                      <div id="u11147_text" class="text ">
+                        <p><span>参数类型</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11148" class="ax_default label">
+                      <div id="u11148_div" class=""></div>
+                      <div id="u11148_text" class="text ">
+                        <p><span>上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11149" class="ax_default label">
+                      <div id="u11149_div" class=""></div>
+                      <div id="u11149_text" class="text ">
+                        <p><span>上上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11150" class="ax_default label">
+                      <div id="u11150_div" class=""></div>
+                      <div id="u11150_text" class="text ">
+                        <p><span>下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11151" class="ax_default label">
+                      <div id="u11151_div" class=""></div>
+                      <div id="u11151_text" class="text ">
+                        <p><span>下下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11152" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11152_div" class=""></div>
+                      <input id="u11152_input" type="text" value="" class="u11152_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11153" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11153_div" class=""></div>
+                      <input id="u11153_input" type="text" value="" class="u11153_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11154" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11154_div" class=""></div>
+                      <input id="u11154_input" type="text" value="" class="u11154_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11155" class="ax_default box_1">
+                      <div id="u11155_div" class=""></div>
+                      <div id="u11155_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11156" class="ax_default label3">
+                      <div id="u11156_div" class=""></div>
+                      <div id="u11156_text" class="text ">
+                        <p><span>B相有功功率</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11157" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11157_div" class=""></div>
+                      <input id="u11157_input" type="text" value="" class="u11157_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11158" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11158_div" class=""></div>
+                      <input id="u11158_input" type="text" value="" class="u11158_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11159" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11159_div" class=""></div>
+                      <input id="u11159_input" type="text" value="" class="u11159_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11160" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11160_div" class=""></div>
+                      <input id="u11160_input" type="text" value="" class="u11160_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11161" class="ax_default box_1">
+                      <div id="u11161_div" class=""></div>
+                      <div id="u11161_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11162" class="ax_default label3">
+                      <div id="u11162_div" class=""></div>
+                      <div id="u11162_text" class="text ">
+                        <p><span>C相有功功率</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11163" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11163_div" class=""></div>
+                      <input id="u11163_input" type="text" value="" class="u11163_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11164" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11164_div" class=""></div>
+                      <input id="u11164_input" type="text" value="" class="u11164_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11165" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11165_div" class=""></div>
+                      <input id="u11165_input" type="text" value="" class="u11165_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11166" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11166_div" class=""></div>
+                      <input id="u11166_input" type="text" value="" class="u11166_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11167" class="ax_default box_1">
+                      <div id="u11167_div" class=""></div>
+                      <div id="u11167_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11168" class="ax_default label3">
+                      <div id="u11168_div" class=""></div>
+                      <div id="u11168_text" class="text ">
+                        <p><span>总有功功率</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11169" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11169_div" class=""></div>
+                      <input id="u11169_input" type="text" value="" class="u11169_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11170" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11170_div" class=""></div>
+                      <input id="u11170_input" type="text" value="" class="u11170_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11171" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11171_div" class=""></div>
+                      <input id="u11171_input" type="text" value="" class="u11171_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11172" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11172_div" class=""></div>
+                      <input id="u11172_input" type="text" value="" class="u11172_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11173" class="ax_default label">
+                      <div id="u11173_div" class=""></div>
+                      <div id="u11173_text" class="text ">
+                        <p><span>备注说明</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11174" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11174_div" class=""></div>
+                      <input id="u11174_input" type="text" value="" class="u11174_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11175" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11175_div" class=""></div>
+                      <input id="u11175_input" type="text" value="" class="u11175_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11176" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11176_div" class=""></div>
+                      <input id="u11176_input" type="text" value="" class="u11176_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11177" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11177_div" class=""></div>
+                      <input id="u11177_input" type="text" value="" class="u11177_input"/>
+                    </div>
+                  </div>
+                </div>
+                <div id="u11059_state3" class="panel_state" data-label="无功功率" style="visibility: hidden;">
+                  <div id="u11059_state3_content" class="panel_state_content">
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11178" class="ax_default box_1">
+                      <div id="u11178_div" class=""></div>
+                      <div id="u11178_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11179" class="ax_default label3">
+                      <div id="u11179_div" class=""></div>
+                      <div id="u11179_text" class="text ">
+                        <p><span>A相无功功率</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11180" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11180_div" class=""></div>
+                      <input id="u11180_input" type="text" value="" class="u11180_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11181" class="ax_default _文本段落">
+                      <div id="u11181_div" class=""></div>
+                      <div id="u11181_text" class="text ">
+                        <p><span>无功功率告警阈值设置（kW）</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 上框 (矩形) -->
+                    <div id="u11182" class="ax_default box_1" data-label="上框">
+                      <div id="u11182_div" class=""></div>
+                      <div id="u11182_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11183" class="ax_default box_1">
+                      <div id="u11183_div" class=""></div>
+                      <div id="u11183_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11184" class="ax_default label">
+                      <div id="u11184_div" class=""></div>
+                      <div id="u11184_text" class="text ">
+                        <p><span>参数类型</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11185" class="ax_default label">
+                      <div id="u11185_div" class=""></div>
+                      <div id="u11185_text" class="text ">
+                        <p><span>上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11186" class="ax_default label">
+                      <div id="u11186_div" class=""></div>
+                      <div id="u11186_text" class="text ">
+                        <p><span>上上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11187" class="ax_default label">
+                      <div id="u11187_div" class=""></div>
+                      <div id="u11187_text" class="text ">
+                        <p><span>下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11188" class="ax_default label">
+                      <div id="u11188_div" class=""></div>
+                      <div id="u11188_text" class="text ">
+                        <p><span>下下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11189" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11189_div" class=""></div>
+                      <input id="u11189_input" type="text" value="" class="u11189_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11190" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11190_div" class=""></div>
+                      <input id="u11190_input" type="text" value="" class="u11190_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11191" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11191_div" class=""></div>
+                      <input id="u11191_input" type="text" value="" class="u11191_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11192" class="ax_default box_1">
+                      <div id="u11192_div" class=""></div>
+                      <div id="u11192_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11193" class="ax_default label3">
+                      <div id="u11193_div" class=""></div>
+                      <div id="u11193_text" class="text ">
+                        <p><span>B相无功功率</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11194" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11194_div" class=""></div>
+                      <input id="u11194_input" type="text" value="" class="u11194_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11195" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11195_div" class=""></div>
+                      <input id="u11195_input" type="text" value="" class="u11195_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11196" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11196_div" class=""></div>
+                      <input id="u11196_input" type="text" value="" class="u11196_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11197" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11197_div" class=""></div>
+                      <input id="u11197_input" type="text" value="" class="u11197_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11198" class="ax_default box_1">
+                      <div id="u11198_div" class=""></div>
+                      <div id="u11198_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11199" class="ax_default label3">
+                      <div id="u11199_div" class=""></div>
+                      <div id="u11199_text" class="text ">
+                        <p><span>C相无功功率</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11200" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11200_div" class=""></div>
+                      <input id="u11200_input" type="text" value="" class="u11200_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11201" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11201_div" class=""></div>
+                      <input id="u11201_input" type="text" value="" class="u11201_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11202" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11202_div" class=""></div>
+                      <input id="u11202_input" type="text" value="" class="u11202_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11203" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11203_div" class=""></div>
+                      <input id="u11203_input" type="text" value="" class="u11203_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11204" class="ax_default box_1">
+                      <div id="u11204_div" class=""></div>
+                      <div id="u11204_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11205" class="ax_default label3">
+                      <div id="u11205_div" class=""></div>
+                      <div id="u11205_text" class="text ">
+                        <p><span>总无功功率</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11206" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11206_div" class=""></div>
+                      <input id="u11206_input" type="text" value="" class="u11206_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11207" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11207_div" class=""></div>
+                      <input id="u11207_input" type="text" value="" class="u11207_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11208" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11208_div" class=""></div>
+                      <input id="u11208_input" type="text" value="" class="u11208_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11209" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11209_div" class=""></div>
+                      <input id="u11209_input" type="text" value="" class="u11209_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11210" class="ax_default label">
+                      <div id="u11210_div" class=""></div>
+                      <div id="u11210_text" class="text ">
+                        <p><span>备注说明</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11211" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11211_div" class=""></div>
+                      <input id="u11211_input" type="text" value="" class="u11211_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11212" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11212_div" class=""></div>
+                      <input id="u11212_input" type="text" value="" class="u11212_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11213" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11213_div" class=""></div>
+                      <input id="u11213_input" type="text" value="" class="u11213_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11214" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11214_div" class=""></div>
+                      <input id="u11214_input" type="text" value="" class="u11214_input"/>
+                    </div>
+                  </div>
+                </div>
+                <div id="u11059_state4" class="panel_state" data-label="功率因素" style="visibility: hidden;">
+                  <div id="u11059_state4_content" class="panel_state_content">
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11215" class="ax_default box_1">
+                      <div id="u11215_div" class=""></div>
+                      <div id="u11215_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11216" class="ax_default label3">
+                      <div id="u11216_div" class=""></div>
+                      <div id="u11216_text" class="text ">
+                        <p><span>A相功率因数</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11217" class="ax_default _文本段落">
+                      <div id="u11217_div" class=""></div>
+                      <div id="u11217_text" class="text ">
+                        <p><span>功率因数告警阈值设置（cosΦ）</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 上框 (矩形) -->
+                    <div id="u11218" class="ax_default box_1" data-label="上框">
+                      <div id="u11218_div" class=""></div>
+                      <div id="u11218_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11219" class="ax_default box_1">
+                      <div id="u11219_div" class=""></div>
+                      <div id="u11219_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11220" class="ax_default label">
+                      <div id="u11220_div" class=""></div>
+                      <div id="u11220_text" class="text ">
+                        <p><span>参数类型</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11221" class="ax_default label">
+                      <div id="u11221_div" class=""></div>
+                      <div id="u11221_text" class="text ">
+                        <p><span>上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11222" class="ax_default label">
+                      <div id="u11222_div" class=""></div>
+                      <div id="u11222_text" class="text ">
+                        <p><span>上上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11223" class="ax_default label">
+                      <div id="u11223_div" class=""></div>
+                      <div id="u11223_text" class="text ">
+                        <p><span>下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11224" class="ax_default label">
+                      <div id="u11224_div" class=""></div>
+                      <div id="u11224_text" class="text ">
+                        <p><span>下下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11225" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11225_div" class=""></div>
+                      <input id="u11225_input" type="text" value="" class="u11225_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11226" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11226_div" class=""></div>
+                      <input id="u11226_input" type="text" value="" class="u11226_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11227" class="ax_default box_1">
+                      <div id="u11227_div" class=""></div>
+                      <div id="u11227_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11228" class="ax_default label3">
+                      <div id="u11228_div" class=""></div>
+                      <div id="u11228_text" class="text ">
+                        <p><span>B相功率因数</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11229" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11229_div" class=""></div>
+                      <input id="u11229_input" type="text" value="" class="u11229_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11230" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11230_div" class=""></div>
+                      <input id="u11230_input" type="text" value="" class="u11230_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11231" class="ax_default box_1">
+                      <div id="u11231_div" class=""></div>
+                      <div id="u11231_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11232" class="ax_default label3">
+                      <div id="u11232_div" class=""></div>
+                      <div id="u11232_text" class="text ">
+                        <p><span>C相功率因数</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11233" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11233_div" class=""></div>
+                      <input id="u11233_input" type="text" value="" class="u11233_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11234" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11234_div" class=""></div>
+                      <input id="u11234_input" type="text" value="" class="u11234_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11235" class="ax_default box_1">
+                      <div id="u11235_div" class=""></div>
+                      <div id="u11235_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11236" class="ax_default label3">
+                      <div id="u11236_div" class=""></div>
+                      <div id="u11236_text" class="text ">
+                        <p><span>总功率因数</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11237" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11237_div" class=""></div>
+                      <input id="u11237_input" type="text" value="" class="u11237_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11238" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11238_div" class=""></div>
+                      <input id="u11238_input" type="text" value="" class="u11238_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11239" class="ax_default label">
+                      <div id="u11239_div" class=""></div>
+                      <div id="u11239_text" class="text ">
+                        <p><span>备注说明</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11240" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11240_div" class=""></div>
+                      <input id="u11240_input" type="text" value="" class="u11240_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11241" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11241_div" class=""></div>
+                      <input id="u11241_input" type="text" value="" class="u11241_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11242" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11242_div" class=""></div>
+                      <input id="u11242_input" type="text" value="" class="u11242_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11243" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11243_div" class=""></div>
+                      <input id="u11243_input" type="text" value="" class="u11243_input"/>
+                    </div>
+                  </div>
+                </div>
+                <div id="u11059_state5" class="panel_state" data-label="线路温度" style="visibility: hidden;">
+                  <div id="u11059_state5_content" class="panel_state_content">
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11244" class="ax_default box_1">
+                      <div id="u11244_div" class=""></div>
+                      <div id="u11244_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11245" class="ax_default label3">
+                      <div id="u11245_div" class=""></div>
+                      <div id="u11245_text" class="text ">
+                        <p><span>A相温度</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11246" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11246_div" class=""></div>
+                      <input id="u11246_input" type="text" value="" class="u11246_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11247" class="ax_default _文本段落">
+                      <div id="u11247_div" class=""></div>
+                      <div id="u11247_text" class="text ">
+                        <p><span>线路温度告警阈值设置（℃）</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 上框 (矩形) -->
+                    <div id="u11248" class="ax_default box_1" data-label="上框">
+                      <div id="u11248_div" class=""></div>
+                      <div id="u11248_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11249" class="ax_default box_1">
+                      <div id="u11249_div" class=""></div>
+                      <div id="u11249_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11250" class="ax_default label">
+                      <div id="u11250_div" class=""></div>
+                      <div id="u11250_text" class="text ">
+                        <p><span>参数类型</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11251" class="ax_default label">
+                      <div id="u11251_div" class=""></div>
+                      <div id="u11251_text" class="text ">
+                        <p><span>上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11252" class="ax_default label">
+                      <div id="u11252_div" class=""></div>
+                      <div id="u11252_text" class="text ">
+                        <p><span>上上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11253" class="ax_default label">
+                      <div id="u11253_div" class=""></div>
+                      <div id="u11253_text" class="text ">
+                        <p><span>下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11254" class="ax_default label">
+                      <div id="u11254_div" class=""></div>
+                      <div id="u11254_text" class="text ">
+                        <p><span>下下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11255" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11255_div" class=""></div>
+                      <input id="u11255_input" type="text" value="" class="u11255_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11256" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11256_div" class=""></div>
+                      <input id="u11256_input" type="text" value="" class="u11256_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11257" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11257_div" class=""></div>
+                      <input id="u11257_input" type="text" value="" class="u11257_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11258" class="ax_default box_1">
+                      <div id="u11258_div" class=""></div>
+                      <div id="u11258_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11259" class="ax_default label3">
+                      <div id="u11259_div" class=""></div>
+                      <div id="u11259_text" class="text ">
+                        <p><span>B相温度</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11260" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11260_div" class=""></div>
+                      <input id="u11260_input" type="text" value="" class="u11260_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11261" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11261_div" class=""></div>
+                      <input id="u11261_input" type="text" value="" class="u11261_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11262" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11262_div" class=""></div>
+                      <input id="u11262_input" type="text" value="" class="u11262_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11263" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11263_div" class=""></div>
+                      <input id="u11263_input" type="text" value="" class="u11263_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11264" class="ax_default box_1">
+                      <div id="u11264_div" class=""></div>
+                      <div id="u11264_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11265" class="ax_default label3">
+                      <div id="u11265_div" class=""></div>
+                      <div id="u11265_text" class="text ">
+                        <p><span>C相温度</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11266" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11266_div" class=""></div>
+                      <input id="u11266_input" type="text" value="" class="u11266_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11267" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11267_div" class=""></div>
+                      <input id="u11267_input" type="text" value="" class="u11267_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11268" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11268_div" class=""></div>
+                      <input id="u11268_input" type="text" value="" class="u11268_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11269" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11269_div" class=""></div>
+                      <input id="u11269_input" type="text" value="" class="u11269_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11270" class="ax_default box_1">
+                      <div id="u11270_div" class=""></div>
+                      <div id="u11270_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11271" class="ax_default label3">
+                      <div id="u11271_div" class=""></div>
+                      <div id="u11271_text" class="text ">
+                        <p><span>环境温度</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11272" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11272_div" class=""></div>
+                      <input id="u11272_input" type="text" value="" class="u11272_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11273" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11273_div" class=""></div>
+                      <input id="u11273_input" type="text" value="" class="u11273_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11274" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11274_div" class=""></div>
+                      <input id="u11274_input" type="text" value="" class="u11274_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11275" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11275_div" class=""></div>
+                      <input id="u11275_input" type="text" value="" class="u11275_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11276" class="ax_default label">
+                      <div id="u11276_div" class=""></div>
+                      <div id="u11276_text" class="text ">
+                        <p><span>备注说明</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11277" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11277_div" class=""></div>
+                      <input id="u11277_input" type="text" value="" class="u11277_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11278" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11278_div" class=""></div>
+                      <input id="u11278_input" type="text" value="" class="u11278_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11279" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11279_div" class=""></div>
+                      <input id="u11279_input" type="text" value="" class="u11279_input"/>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11280" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11280_div" class=""></div>
+                      <input id="u11280_input" type="text" value="" class="u11280_input"/>
+                    </div>
+                  </div>
+                </div>
+                <div id="u11059_state6" class="panel_state" data-label="漏电流" style="visibility: hidden;">
+                  <div id="u11059_state6_content" class="panel_state_content">
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11281" class="ax_default box_1">
+                      <div id="u11281_div" class=""></div>
+                      <div id="u11281_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11282" class="ax_default label3">
+                      <div id="u11282_div" class=""></div>
+                      <div id="u11282_text" class="text ">
+                        <p><span>总漏电流</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11283" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11283_div" class=""></div>
+                      <input id="u11283_input" type="text" value="" class="u11283_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11284" class="ax_default _文本段落">
+                      <div id="u11284_div" class=""></div>
+                      <div id="u11284_text" class="text ">
+                        <p><span>漏电流告警阈值设置（℃）</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 上框 (矩形) -->
+                    <div id="u11285" class="ax_default box_1" data-label="上框">
+                      <div id="u11285_div" class=""></div>
+                      <div id="u11285_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11286" class="ax_default box_1">
+                      <div id="u11286_div" class=""></div>
+                      <div id="u11286_text" class="text " style="display:none; visibility: hidden">
+                        <p></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11287" class="ax_default label">
+                      <div id="u11287_div" class=""></div>
+                      <div id="u11287_text" class="text ">
+                        <p><span>参数类型</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11288" class="ax_default label">
+                      <div id="u11288_div" class=""></div>
+                      <div id="u11288_text" class="text ">
+                        <p><span>上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11289" class="ax_default label">
+                      <div id="u11289_div" class=""></div>
+                      <div id="u11289_text" class="text ">
+                        <p><span>上上限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11290" class="ax_default label">
+                      <div id="u11290_div" class=""></div>
+                      <div id="u11290_text" class="text ">
+                        <p><span>下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11291" class="ax_default label">
+                      <div id="u11291_div" class=""></div>
+                      <div id="u11291_text" class="text ">
+                        <p><span>下下限</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11292" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11292_div" class=""></div>
+                      <input id="u11292_input" type="text" value="" class="u11292_input"/>
+                    </div>
+
+                    <!-- Unnamed (矩形) -->
+                    <div id="u11293" class="ax_default label">
+                      <div id="u11293_div" class=""></div>
+                      <div id="u11293_text" class="text ">
+                        <p><span>备注说明</span></p>
+                      </div>
+                    </div>
+
+                    <!-- 仪表编号-dev (文本框) -->
+                    <div id="u11294" class="ax_default text_field" data-label="仪表编号-dev">
+                      <div id="u11294_div" class=""></div>
+                      <input id="u11294_input" type="text" value="" class="u11294_input"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11295" class="ax_default icon">
+                <img id="u11295_img" class="img " src="images/设备管理-计量仪表/u8753.svg"/>
+                <div id="u11295_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11296" class="ax_default box_1" selectiongroup="安全配置">
+                <div id="u11296_div" class=""></div>
+                <div id="u11296_text" class="text ">
+                  <p><span>电流</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11297" class="ax_default box_1 selected" selectiongroup="安全配置">
+                <div id="u11297_div" class="selected"></div>
+                <div id="u11297_text" class="text ">
+                  <p><span>电压</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11298" class="ax_default box_1" selectiongroup="安全配置">
+                <div id="u11298_div" class=""></div>
+                <div id="u11298_text" class="text ">
+                  <p><span>无功功率</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11299" class="ax_default box_1" selectiongroup="安全配置">
+                <div id="u11299_div" class=""></div>
+                <div id="u11299_text" class="text ">
+                  <p><span>有功功率</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11300" class="ax_default box_1" selectiongroup="安全配置">
+                <div id="u11300_div" class=""></div>
+                <div id="u11300_text" class="text ">
+                  <p><span>功率因数</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11301" class="ax_default box_1" selectiongroup="安全配置">
+                <div id="u11301_div" class=""></div>
+                <div id="u11301_text" class="text ">
+                  <p><span>线路温度</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11302" class="ax_default box_1" selectiongroup="安全配置">
+                <div id="u11302_div" class=""></div>
+                <div id="u11302_text" class="text ">
+                  <p><span>漏电流</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11303" class="ax_default _文本段落">
+                <div id="u11303_div" class=""></div>
+                <div id="u11303_text" class="text ">
+                  <p><span>告警时段</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (文本框) -->
+              <div id="u11304" class="ax_default text_field">
+                <div id="u11304_div" class=""></div>
+                <input id="u11304_input" type="time" value="" class="u11304_input"/>
+              </div>
+
+              <!-- Unnamed (文本框) -->
+              <div id="u11305" class="ax_default text_field">
+                <div id="u11305_div" class=""></div>
+                <input id="u11305_input" type="time" value="" class="u11305_input"/>
+              </div>
+            </div>
+
+            <!-- 综合办公区 (动态面板) -->
+            <div id="u11306" class="ax_default" data-label="综合办公区">
+              <div id="u11306_state0" class="panel_state" data-label="展开" style="">
+                <div id="u11306_state0_content" class="panel_state_content">
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11307" class="ax_default icon">
+                    <img id="u11307_img" class="img " src="images/实时监测-计量仪表/u507.svg"/>
+                    <div id="u11307_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <!-- 办公区02 (矩形) -->
+                  <div id="u11308" class="ax_default label" data-label="办公区02" selectiongroup="分区树">
+                    <div id="u11308_div" class=""></div>
+                    <div id="u11308_text" class="text ">
+                      <p><span>综合办公区</span></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (矩形) -->
+                  <div id="u11309" class="ax_default label" selectiongroup="分区树">
+                    <div id="u11309_div" class=""></div>
+                    <div id="u11309_text" class="text ">
+                      <p><span>10层- A区</span></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (矩形) -->
+                  <div id="u11310" class="ax_default label" selectiongroup="分区树">
+                    <div id="u11310_div" class=""></div>
+                    <div id="u11310_text" class="text ">
+                      <p><span>10层- A区</span></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11311" class="ax_default icon">
+                    <img id="u11311_img" class="img " src="images/实时监测-计量仪表/u507.svg"/>
+                    <div id="u11311_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11312" class="ax_default icon">
+                    <img id="u11312_img" class="img " src="images/实时监测-计量仪表/u507.svg"/>
+                    <div id="u11312_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="u11306_state1" class="panel_state" data-label="收起" style="visibility: hidden;">
+                <div id="u11306_state1_content" class="panel_state_content">
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11313" class="ax_default icon">
+                    <img id="u11313_img" class="img " src="images/实时监测-计量仪表/u511.svg"/>
+                    <div id="u11313_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <!-- 办公区01 (矩形) -->
+                  <div id="u11314" class="ax_default label" data-label="办公区01" selectiongroup="分区树">
+                    <div id="u11314_div" class=""></div>
+                    <div id="u11314_text" class="text ">
+                      <p><span>综合办公区</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 机加工车间 (动态面板) -->
+            <div id="u11315" class="ax_default" data-label="机加工车间">
+              <div id="u11315_state0" class="panel_state" data-label="收起" style="">
+                <div id="u11315_state0_content" class="panel_state_content">
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11316" class="ax_default icon">
+                    <img id="u11316_img" class="img " src="images/实时监测-计量仪表/u518.svg"/>
+                    <div id="u11316_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <!-- 车间01 (矩形) -->
+                  <div id="u11317" class="ax_default label" data-label="车间01" selectiongroup="分区树">
+                    <div id="u11317_div" class=""></div>
+                    <div id="u11317_text" class="text ">
+                      <p><span>机加工车间</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="u11315_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+                <div id="u11315_state1_content" class="panel_state_content">
+
+                  <!-- 车间02 (矩形) -->
+                  <div id="u11318" class="ax_default label" data-label="车间02" selectiongroup="分区树">
+                    <div id="u11318_div" class=""></div>
+                    <div id="u11318_text" class="text ">
+                      <p><span>机加工车间</span></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11319" class="ax_default icon">
+                    <img id="u11319_img" class="img " src="images/实时监测-计量仪表/u507.svg"/>
+                    <div id="u11319_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (矩形) -->
+                  <div id="u11320" class="ax_default label" selectiongroup="分区树">
+                    <div id="u11320_div" class=""></div>
+                    <div id="u11320_text" class="text ">
+                      <p><span>F01产线</span></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11321" class="ax_default icon">
+                    <img id="u11321_img" class="img " src="images/设备管理-分项系统/u8055.svg"/>
+                    <div id="u11321_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (矩形) -->
+                  <div id="u11322" class="ax_default label" selectiongroup="分区树">
+                    <div id="u11322_div" class=""></div>
+                    <div id="u11322_text" class="text ">
+                      <p><span>F01_101数控机床</span></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (矩形) -->
+                  <div id="u11323" class="ax_default label" selectiongroup="分区树">
+                    <div id="u11323_div" class=""></div>
+                    <div id="u11323_text" class="text ">
+                      <p><span>F02产线</span></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11324" class="ax_default icon">
+                    <img id="u11324_img" class="img " src="images/实时监测-计量仪表/u507.svg"/>
+                    <div id="u11324_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <!-- Unnamed (形状) -->
+                  <div id="u11325" class="ax_default icon">
+                    <img id="u11325_img" class="img " src="images/实时监测-计量仪表/u507.svg"/>
+                    <div id="u11325_text" class="text " style="display:none; visibility: hidden">
+                      <p></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unnamed (组合) -->
+            <div id="u11326" class="ax_default" data-left="58" data-top="319" data-width="134" data-height="20">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11327" class="ax_default label" selectiongroup="分区树">
+                <div id="u11327_div" class=""></div>
+                <div id="u11327_text" class="text ">
+                  <p><span>仓储库房</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11328" class="ax_default icon">
+                <img id="u11328_img" class="img " src="images/实时监测-计量仪表/u507.svg"/>
+                <div id="u11328_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unnamed (组合) -->
+            <div id="u11329" class="ax_default" data-left="28" data-top="144" data-width="134" data-height="20">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u11330" class="ax_default label" selectiongroup="分区树">
+                <div id="u11330_div" class=""></div>
+                <div id="u11330_text" class="text ">
+                  <p><span>XXX公司</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11331" class="ax_default icon">
+                <img id="u11331_img" class="img " src="images/实时监测-计量仪表/u507.svg"/>
+                <div id="u11331_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u11332" class="ax_default _文本段落">
+        <div id="u11332_div" class=""></div>
+        <div id="u11332_text" class="text ">
+          <p><span style="font-family:'Arial Normal', 'Arial', sans-serif;">Copyright © Hardy, All Rights Reserved</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">，EMS Systems，</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;">QQ</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">：</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;">21583813</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (系统设置-菜单) -->
+
+      <!-- 下框 (矩形) -->
+      <div id="u11334" class="ax_default box_1" data-label="下框">
+        <div id="u11334_div" class=""></div>
+        <div id="u11334_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 单元分区 (动态面板) -->
+      <div id="u11335" class="ax_default" data-label="单元分区">
+        <div id="u11335_state0" class="panel_state" data-label="收缩" style="">
+          <div id="u11335_state0_content" class="panel_state_content">
+
+            <!-- 单元分区-1 (组合) -->
+            <div id="u11336" class="ax_default" data-label="单元分区-1" selectiongroup="u11333系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11337" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11337_div" class=""></div>
+                <div id="u11337_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11338" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11338_div" class=""></div>
+                <div id="u11338_text" class="text ">
+                  <p><span>单元分区管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11339" class="ax_default icon">
+                <img id="u11339_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u11339_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11340" class="ax_default _形状">
+                <img id="u11340_img" class="img " src="images/分区-用能分区管理/u7302.svg"/>
+                <div id="u11340_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u11335_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+          <div id="u11335_state1_content" class="panel_state_content">
+
+            <!-- 单元分区-2 (组合) -->
+            <div id="u11341" class="ax_default" data-label="单元分区-2" selectiongroup="u11333系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11342" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11342_div" class=""></div>
+                <div id="u11342_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11343" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11343_div" class=""></div>
+                <div id="u11343_text" class="text ">
+                  <p><span>单元分区管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11344" class="ax_default icon">
+                <img id="u11344_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u11344_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11345" class="ax_default _形状">
+                <img id="u11345_img" class="img " src="images/分区-用能分区管理/u7302.svg"/>
+                <div id="u11345_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 分区配置 (组合) -->
+            <div id="u11346" class="ax_default" data-label="分区配置" selectiongroup="u11333系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11347" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11347_div" class=""></div>
+                <div id="u11347_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11348" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11348_div" class=""></div>
+                <div id="u11348_text" class="text ">
+                  <p><span>用能分区配置</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 统计周期 (组合) -->
+            <div id="u11349" class="ax_default" data-label="统计周期" selectiongroup="u11333系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11350" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11350_div" class=""></div>
+                <div id="u11350_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11351" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11351_div" class=""></div>
+                <div id="u11351_text" class="text ">
+                  <p><span>统计周期配置</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 线损分析 (组合) -->
+            <div id="u11352" class="ax_default" data-label="线损分析" selectiongroup="u11333系统-二级" data-left="0" data-top="123" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11353" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11353_div" class=""></div>
+                <div id="u11353_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11354" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11354_div" class=""></div>
+                <div id="u11354_text" class="text ">
+                  <p><span>线损分析定义</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 设备管理 (动态面板) -->
+      <div id="u11355" class="ax_default" data-label="设备管理">
+        <div id="u11355_state0" class="panel_state" data-label="缩进" style="">
+          <div id="u11355_state0_content" class="panel_state_content">
+
+            <!-- 设备管理-1 (组合) -->
+            <div id="u11356" class="ax_default" data-label="设备管理-1" selectiongroup="u11333系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11357" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11357_div" class=""></div>
+                <div id="u11357_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11358" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11358_div" class=""></div>
+                <div id="u11358_text" class="text ">
+                  <p><span>用能设备管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11359" class="ax_default icon">
+                <img id="u11359_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u11359_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11360" class="ax_default _形状">
+                <img id="u11360_img" class="img " src="images/分区-用能分区管理/u7322.svg"/>
+                <div id="u11360_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u11355_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+          <div id="u11355_state1_content" class="panel_state_content">
+
+            <!-- 设备管理-2 (组合) -->
+            <div id="u11361" class="ax_default" data-label="设备管理-2" selectiongroup="u11333系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11362" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11362_div" class=""></div>
+                <div id="u11362_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11363" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11363_div" class=""></div>
+                <div id="u11363_text" class="text ">
+                  <p><span>用能设备管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11364" class="ax_default icon">
+                <img id="u11364_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u11364_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11365" class="ax_default _形状">
+                <img id="u11365_img" class="img " src="images/分区-用能分区管理/u7322.svg"/>
+                <div id="u11365_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 分项设备系统 (组合) -->
+            <div id="u11366" class="ax_default" data-label="分项设备系统" selectiongroup="u11333系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11367" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11367_div" class=""></div>
+                <div id="u11367_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11368" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11368_div" class=""></div>
+                <div id="u11368_text" class="text ">
+                  <p><span>分项系统</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 计量设备 (组合) -->
+            <div id="u11369" class="ax_default" data-label="计量设备" selectiongroup="u11333系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11370" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11370_div" class=""></div>
+                <div id="u11370_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11371" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11371_div" class=""></div>
+                <div id="u11371_text" class="text ">
+                  <p><span>计量仪表</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u11372" class="ax_default box_1">
+        <div id="u11372_div" class=""></div>
+        <div id="u11372_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u11373" class="ax_default _文本段落">
+        <div id="u11373_div" class=""></div>
+        <div id="u11373_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">系统管理</span><span style="font-family:'Impact', sans-serif;font-weight:900;">&nbsp; &nbsp; &nbsp; &nbsp; </span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u11374" class="ax_default ellipse">
+        <img id="u11374_img" class="img " src="images/实时监测-计量仪表/u571.svg"/>
+        <div id="u11374_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 设置 (形状) -->
+      <div id="u11375" class="ax_default _形状4" data-label="设置">
+        <img id="u11375_img" class="img " src="images/分区-用能分区管理/设置_u7337.svg"/>
+        <div id="u11375_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 告警规则 (动态面板) -->
+      <div id="u11376" class="ax_default" data-label="告警规则">
+        <div id="u11376_state0" class="panel_state" data-label="缩进" style="">
+          <div id="u11376_state0_content" class="panel_state_content">
+
+            <!-- 告警管理-1 (组合) -->
+            <div id="u11377" class="ax_default" data-label="告警管理-1" selectiongroup="u11333系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11378" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11378_div" class=""></div>
+                <div id="u11378_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11379" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11379_div" class=""></div>
+                <div id="u11379_text" class="text ">
+                  <p><span>告警规则配置</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11380" class="ax_default icon">
+                <img id="u11380_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u11380_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11381" class="ax_default _形状">
+                <img id="u11381_img" class="img " src="images/分区-用能分区管理/u7343.svg"/>
+                <div id="u11381_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u11376_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+          <div id="u11376_state1_content" class="panel_state_content">
+
+            <!-- 告警管理-2 (组合) -->
+            <div id="u11382" class="ax_default" data-label="告警管理-2" selectiongroup="u11333系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11383" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11383_div" class=""></div>
+                <div id="u11383_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11384" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11384_div" class=""></div>
+                <div id="u11384_text" class="text ">
+                  <p><span>告警规则配置</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11385" class="ax_default icon">
+                <img id="u11385_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u11385_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11386" class="ax_default _形状">
+                <img id="u11386_img" class="img " src="images/分区-用能分区管理/u7343.svg"/>
+                <div id="u11386_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用能预警设置 (组合) -->
+            <div id="u11387" class="ax_default" data-label="用能预警设置" selectiongroup="u11333系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11388" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11388_div" class=""></div>
+                <div id="u11388_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 用能预警 (矩形) -->
+              <div id="u11389" class="ax_default _文本段落" data-label="用能预警">
+                <div id="u11389_div" class=""></div>
+                <div id="u11389_text" class="text ">
+                  <p><span>用能预警设置</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 安全告警设置 (组合) -->
+            <div id="u11390" class="ax_default" data-label="安全告警设置" selectiongroup="u11333系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11391" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11391_div" class=""></div>
+                <div id="u11391_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11392" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11392_div" class=""></div>
+                <div id="u11392_text" class="text ">
+                  <p><span>电能质量告警</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 系统基础管理 (动态面板) -->
+      <div id="u11393" class="ax_default" data-label="系统基础管理">
+        <div id="u11393_state0" class="panel_state" data-label="缩进" style="">
+          <div id="u11393_state0_content" class="panel_state_content">
+
+            <!-- 基础配置-1 (组合) -->
+            <div id="u11394" class="ax_default" data-label="基础配置-1" selectiongroup="u11333系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11395" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11395_div" class=""></div>
+                <div id="u11395_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11396" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11396_div" class=""></div>
+                <div id="u11396_text" class="text ">
+                  <p><span>系统基础管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11397" class="ax_default icon">
+                <img id="u11397_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u11397_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11398" class="ax_default _形状">
+                <img id="u11398_img" class="img " src="images/分区-用能分区管理/u7360.svg"/>
+                <div id="u11398_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u11393_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+          <div id="u11393_state1_content" class="panel_state_content">
+
+            <!-- 基础配置-2 (组合) -->
+            <div id="u11399" class="ax_default" data-label="基础配置-2" selectiongroup="u11333系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11400" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11400_div" class=""></div>
+                <div id="u11400_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11401" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11401_div" class=""></div>
+                <div id="u11401_text" class="text ">
+                  <p><span>系统基础管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11402" class="ax_default icon">
+                <img id="u11402_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u11402_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u11403" class="ax_default _形状">
+                <img id="u11403_img" class="img " src="images/分区-用能分区管理/u7360.svg"/>
+                <div id="u11403_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 组织管理 (组合) -->
+            <div id="u11404" class="ax_default" data-label="组织管理" selectiongroup="u11333系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11405" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11405_div" class=""></div>
+                <div id="u11405_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11406" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11406_div" class=""></div>
+                <div id="u11406_text" class="text ">
+                  <p><span>组织管理</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用户管理 (组合) -->
+            <div id="u11407" class="ax_default" data-label="用户管理" selectiongroup="u11333系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11408" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11408_div" class=""></div>
+                <div id="u11408_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11409" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11409_div" class=""></div>
+                <div id="u11409_text" class="text ">
+                  <p><span>用户管理</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 角色权限 (组合) -->
+            <div id="u11410" class="ax_default" data-label="角色权限" selectiongroup="u11333系统-二级" data-left="0" data-top="123" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11411" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11411_div" class=""></div>
+                <div id="u11411_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11412" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11412_div" class=""></div>
+                <div id="u11412_text" class="text ">
+                  <p><span>角色权限</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 操作日志 (组合) -->
+            <div id="u11413" class="ax_default" data-label="操作日志" selectiongroup="u11333系统-二级" data-left="0" data-top="164" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u11414" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u11414_div" class=""></div>
+                <div id="u11414_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u11415" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u11415_div" class=""></div>
+                <div id="u11415_text" class="text ">
+                  <p><span>操作日志</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 用能价格管理 (组合) -->
+      <div id="u11416" class="ax_default" data-label="用能价格管理" selectiongroup="u11333系统-二级" data-left="0" data-top="222" data-width="260" data-height="40">
+
+        <!-- 门禁菜单框 (矩形) -->
+        <div id="u11417" class="ax_default box_1" data-label="门禁菜单框">
+          <div id="u11417_div" class=""></div>
+          <div id="u11417_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- 智能门禁 (矩形) -->
+        <div id="u11418" class="ax_default _文本段落" data-label="智能门禁">
+          <div id="u11418_div" class=""></div>
+          <div id="u11418_text" class="text ">
+            <p><span>用能价格管理</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u11419" class="ax_default _形状">
+          <img id="u11419_img" class="img " src="images/分区-用能分区管理/u7381.svg"/>
+          <div id="u11419_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+      <div id="u11333" style="display:none; visibility:hidden;"></div>
+
+      <!-- 上框 (矩形) -->
+      <div id="u11420" class="ax_default box_1" data-label="上框">
+        <div id="u11420_div" class=""></div>
+        <div id="u11420_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u11421" class="ax_default box_1">
+        <div id="u11421_div" class=""></div>
+        <div id="u11421_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (下拉列表) -->
+      <div id="u11422" class="ax_default droplist">
+        <img id="u11422_img" class="img " src="images/实时监测-计量仪表/u2361.svg"/>
+        <select id="u11422_input" class="u11422_input">
+          <option class="u11422_input_option" value="XX企业用能项目">XX企业用能项目</option>
+          <option class="u11422_input_option" value="XX建筑用能项目">XX建筑用能项目</option>
+        </select>
+      </div>
+    </div>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

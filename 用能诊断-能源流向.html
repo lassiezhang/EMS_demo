@@ -1,0 +1,1340 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>用能诊断-能源流向</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/用能诊断-能源流向/styles.css" type="text/css" rel="stylesheet"/>
+    <style type="text/css">
+@font-face {
+/**
+ * Created by AxurePro on 2020/3/26.
+ * Axure.js,为解析echarts代码使用
+ * 文件博航
+ */
+//}</style>
+<script type="text/javascript">
+window.open = window.open;
+window.open = function () {
+
+    function init() {
+        if (window.$) {
+            $(document).ready(function () {
+                setTimeout(function () {
+                    window.open('javascript:');
+                }, 0);
+            });
+        } else {
+            setTimeout(init, 0);
+        }
+    }
+
+    setTimeout(init, 0);
+    if (typeof String.prototype.trim !== "function") {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, "");
+        };
+    }
+
+    function startSplitMouse(evt) {
+        if ( opts.outline )
+            zombie = zombie || bar.clone(false).insertAfter(A);
+        panes.css("-webkit-user-select", "none");   // Safari selects A/B text on a move
+        bar.addClass(opts.activeClass);
+        $('<div class="splitterMask"></div>').insertAfter(bar);
+        A._posSplit = A[0][opts.pxSplit] - evt[opts.eventPos];
+        $(document)
+            .bind("mousemove", doSplitMouse)
+            .bind("mouseup", endSplitMouse);
+    }
+    var showwindow = window.open;
+    var showdialog = function (echartcode, itemname, value, data) {
+        if (data !== undefined) return showwindow(echartcode, itemname, value, data);
+        if (value !== undefined) return showwindow(echartcode, itemname, value);
+        if (itemname !== undefined) return showwindow(echartcode, itemname);
+        return showwindow(echartcode);
+    };
+    return function (echartcode, itemname, value, data) {
+        if ((echartcode.substring(0, 11) !== "javascript:") || (!$axure)) {
+            if (window.openReplace) {
+                window.openReplace = false;
+                window.location.replace(echartcode);
+                return false;
+            }
+            return showdialog(echartcode, itemname, value, data);
+        }
+        function doSplitMouse(evt) {
+            var newPos = A._posSplit+evt[opts.eventPos];
+            if ( opts.outline ) {
+                newPos = Math.max(0, Math.min(newPos, splitter._DA - bar._DA));
+                bar.css(opts.origin, newPos);
+            } else
+                resplit(newPos);
+        }
+        function endSplitMouse(evt) {
+            $('div.splitterMask').remove();
+            bar.removeClass(opts.activeClass);
+            var newPos = A._posSplit+evt[opts.eventPos];
+            if ( opts.outline ) {
+                zombie.remove(); zombie = null;
+                resplit(newPos);
+            }
+            panes.css("-webkit-user-select", "text");   // let Safari select text again
+            $(document)
+                .unbind("mousemove", doSplitMouse)
+                .unbind("mouseup", endSplitMouse);
+        }
+        function resplit(newPos) {
+            // Constrain new splitbar position to fit pane size limits
+            newPos = Math.max(A._min, splitter._DA - B._max,
+                Math.min(newPos, A._max, splitter._DA - bar._DA - B._min));
+            // Resize/position the two panes
+            bar._DA = bar[0][opts.pxSplit];      // bar size may change during dock
+
+            var posOffset = bar.is(':visible') ? bar._DA - 1 : 0;
+
+            bar.css(opts.origin, newPos - posOffset).css(opts.fixed, splitter._DF);
+            A.css(opts.origin, 0).css(opts.split, newPos).css(opts.fixed,  splitter._DF);
+            B.css(opts.origin, newPos + bar._DA - posOffset)
+                .css(opts.split, splitter._DA-bar._DA-newPos).css(opts.fixed,  splitter._DF);
+            // IE fires resize for us; all others pay cash
+            if ( !IE_10_AND_BELOW )
+                panes.trigger("resize");
+        }
+
+        var htmlcode = echartcode.substring(11).trim();
+        if (false && console) console.log("** " + htmlcode + " **\n");
+        if ((htmlcode[0] === '/') && (htmlcode[1] === '/')) return false;
+        if ((htmlcode[0] == '@') || (htmlcode[0] == '#')) {
+
+            var src = htmlcode.split(":");
+            htmlcode = $axure(src[0].trim()).text();
+            if (!htmlcode) return $axure.error('Widget "' + src[0] + '" not found.');
+            var l = htmlcode.split(':');
+            htmlcode = htmlcode.replace("[[" + l[0].trim() + "]]", JSON.stringify(l.slice(1).join(':')).slice(1, -1).replace("'", "\\'"));
+            if (src.length > 1) {
+                var canvas = $axure(src[1].trim()).$().children("iframe")[0];
+                if (!canvas) return $axure.error('Widget InlineFrame "' + src[1] + '" not found.');
+                canvas = (canvas.contentWindow ? canvas.contentWindow : canvas.contentDocument.document ? canvas.contentDocument.document : canvas.contentDocument).document;
+                canvas.open("text/html", "replace");
+                canvas.write(htmlcode);
+                canvas.close();
+                return false;
+            }
+        }
+        function dimSum(jq, dims) {
+            // Opera returns -1 for missing min/max width, turn into 0
+            var sum = 0;
+            for ( var i=1; i < arguments.length; i++ )
+                sum += Math.max(parseInt(jq.css(arguments[i])) || 0, 0);
+            return sum;
+        }
+        if (htmlcode !== '') {
+            if ($axure.debug) htmlcode = eval(htmlcode); else try {
+                htmlcode = eval(htmlcode);
+            } catch (err) {
+                return $axure.error("Exception:\n" + err + "\n\nTrace:\n" + err.stack + "\n\nScript:\n" + htmlcode.slice(0, 1024));
+            }
+            if (htmlcode) return showdialog('javascript: ' + JSON.stringify(htmlcode) + ';', itemname, value, data);
+        }
+        return false;
+    };
+    function getInitialUrl() {
+        var pageName = getHashStringVar("p");
+        if(pageName.length > 0) return pageName + ".html";
+        else {
+            var url = getFirstPageUrl($axure.document.sitemap.rootNodes);
+            return (url ? url : "about:blank");
+        }
+    }
+
+    function getFirstPageUrl(nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            if (node.url) return node.url;
+            else {
+                var hasChildren = (node.children && node.children.length > 0);
+                if (hasChildren) {
+                    var url = getFirstPageUrl(node.children);
+                    if (url) return url;
+                }
+            }
+        }
+        return null;
+    }
+
+}();
+//</script>
+<style type="text/css">{
+}
+    </style>
+    <script src="resources/scripts/jquery-3.2.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/用能诊断-能源流向/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5284" class="ax_default box_1">
+        <div id="u5284_div" class=""></div>
+        <div id="u5284_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 上框 (矩形) -->
+      <div id="u5285" class="ax_default box_1" data-label="上框">
+        <div id="u5285_div" class=""></div>
+        <div id="u5285_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5286" class="ax_default _文本段落">
+        <div id="u5286_div" class=""></div>
+        <div id="u5286_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">能效分析</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;"> / </span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">用能诊断</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;"> / </span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">能源流向</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5287" class="ax_default _文本段落">
+        <div id="u5287_div" class=""></div>
+        <div id="u5287_text" class="text ">
+          <p><span>欢迎</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5288" class="ax_default icon">
+        <img id="u5288_img" class="img " src="images/实时监测-计量仪表/u548.svg"/>
+        <div id="u5288_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (EMS-顶部栏) -->
+
+      <!-- 主菜单 (动态面板) -->
+      <div id="u5290" class="ax_default" data-label="主菜单">
+        <div id="u5290_state0" class="panel_state" data-label="State1" style="">
+          <div id="u5290_state0_content" class="panel_state_content">
+
+            <!-- 能耗统计-顶部 (矩形) -->
+            <div id="u5291" class="ax_default _文本段落" data-label="能耗统计-顶部" selectiongroup="u5289T-Menu">
+              <img id="u5291_img" class="img " src="images/综合概览-大屏/能耗统计-顶部_u3.svg"/>
+              <div id="u5291_text" class="text ">
+                <p><span>能耗统计</span></p>
+              </div>
+            </div>
+
+            <!-- 实时监控-顶部 (矩形) -->
+            <div id="u5292" class="ax_default _文本段落" data-label="实时监控-顶部" selectiongroup="u5289T-Menu">
+              <img id="u5292_img" class="img " src="images/综合概览-大屏/实时监控-顶部_u4.svg"/>
+              <div id="u5292_text" class="text ">
+                <p><span>实时监控</span></p>
+              </div>
+            </div>
+
+            <!-- 综合概览-顶部 (矩形) -->
+            <div id="u5293" class="ax_default _文本段落" data-label="综合概览-顶部" selectiongroup="u5289T-Menu">
+              <img id="u5293_img" class="img " src="images/综合概览-大屏/实时监控-顶部_u4.svg"/>
+              <div id="u5293_text" class="text ">
+                <p><span>综合概览</span></p>
+              </div>
+            </div>
+
+            <!-- 能效分析-顶部 (矩形) -->
+            <div id="u5294" class="ax_default _文本段落" data-label="能效分析-顶部" selectiongroup="u5289T-Menu">
+              <div id="u5294_div" class=""></div>
+              <div id="u5294_text" class="text ">
+                <p><span>能效分析</span></p>
+              </div>
+            </div>
+
+            <!-- 系统管理-顶部 (矩形) -->
+            <div id="u5295" class="ax_default _文本段落" data-label="系统管理-顶部" selectiongroup="u5289T-Menu">
+              <div id="u5295_div" class=""></div>
+              <div id="u5295_text" class="text ">
+                <p><span>系统管理</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="u5289" style="display:none; visibility:hidden;"></div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5296" class="ax_default label1">
+        <div id="u5296_div" class=""></div>
+        <div id="u5296_text" class="text ">
+          <p><span style="color:#70B603;">EMS </span><span style="color:#FFFFFF;">智慧能源管理系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (文本框) -->
+      <div id="u5297" class="ax_default text_field disabled">
+        <div id="u5297_div" class="disabled"></div>
+        <input id="u5297_input" type="text" value="LOGO" class="u5297_input" disabled/>
+      </div>
+
+      <!-- Unnamed (下拉列表) -->
+      <div id="u5298" class="ax_default droplist">
+        <div id="u5298_div" class=""></div>
+        <select id="u5298_input" class="u5298_input">
+          <option class="u5298_input_option" selected value="admin">admin</option>
+          <option class="u5298_input_option" value="账号信息">账号信息</option>
+          <option class="u5298_input_option" value="修改密码">修改密码</option>
+          <option class="u5298_input_option" value="退出登录">退出登录</option>
+        </select>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u5299" class="ax_default" data-left="1683" data-top="20" data-width="20" data-height="20">
+
+        <!-- Unnamed (形状) -->
+        <div id="u5300" class="ax_default _形状">
+          <img id="u5300_img" class="img " src="images/实时监测-计量仪表/u560.svg"/>
+          <div id="u5300_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u5301" class="ax_default _形状">
+          <img id="u5301_img" class="img " src="images/实时监测-计量仪表/u561.svg"/>
+          <div id="u5301_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u5302" class="ax_default _形状">
+          <img id="u5302_img" class="img " src="images/实时监测-计量仪表/u562.svg"/>
+          <div id="u5302_text" class="text ">
+            <p><span>2</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u5303" class="ax_default _形状">
+          <img id="u5303_img" class="img " src="images/实时监测-计量仪表/u563.svg"/>
+          <div id="u5303_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u5304" class="ax_default _形状">
+          <img id="u5304_img" class="img " src="images/实时监测-计量仪表/u564.svg"/>
+          <div id="u5304_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u5305" class="ax_default _形状">
+          <img id="u5305_img" class="img " src="images/实时监测-计量仪表/u565.svg"/>
+          <div id="u5305_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5306" class="ax_default box_1">
+        <div id="u5306_div" class=""></div>
+        <div id="u5306_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5307" class="ax_default _文本段落">
+        <div id="u5307_div" class=""></div>
+        <div id="u5307_text" class="text ">
+          <p><span style="font-family:'Arial Normal', 'Arial', sans-serif;">Copyright © Hardy, All Rights Reserved</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">，EMS Systems，</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;">QQ</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">：</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;">21583813</span></p>
+        </div>
+      </div>
+
+      <!-- 上框 (矩形) -->
+      <div id="u5308" class="ax_default box_1" data-label="上框">
+        <div id="u5308_div" class=""></div>
+        <div id="u5308_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (能效分析-菜单) -->
+
+      <!-- 下框 (矩形) -->
+      <div id="u5310" class="ax_default box_1" data-label="下框">
+        <div id="u5310_div" class=""></div>
+        <div id="u5310_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 用能诊断分析 (动态面板) -->
+      <div id="u5311" class="ax_default" data-label="用能诊断分析">
+        <div id="u5311_state0" class="panel_state" data-label="展开" style="">
+          <div id="u5311_state0_content" class="panel_state_content">
+
+            <!-- 用能诊断-2 (组合) -->
+            <div id="u5312" class="ax_default" data-label="用能诊断-2" selectiongroup="u5309系统一级" data-left="0" data-top="1" data-width="260" data-height="40">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5313" class="ax_default box_1">
+                <div id="u5313_div" class=""></div>
+                <div id="u5313_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5314" class="ax_default _文本段落">
+                <div id="u5314_div" class=""></div>
+                <div id="u5314_text" class="text ">
+                  <p><span>用能诊断</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u5315" class="ax_default icon">
+                <img id="u5315_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u5315_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u5316" class="ax_default _形状">
+                <img id="u5316_img" class="img " src="images/用能诊断-损耗分析/u5202.svg"/>
+                <div id="u5316_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用能损耗 (组合) -->
+            <div id="u5317" class="ax_default" data-label="用能损耗" selectiongroup="u5309系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5318" class="ax_default box_1">
+                <div id="u5318_div" class=""></div>
+                <div id="u5318_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5319" class="ax_default _文本段落">
+                <div id="u5319_div" class=""></div>
+                <div id="u5319_text" class="text ">
+                  <p><span>用能损耗</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 流向分析 (组合) -->
+            <div id="u5320" class="ax_default" data-label="流向分析" selectiongroup="u5309系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5321" class="ax_default box_1">
+                <div id="u5321_div" class=""></div>
+                <div id="u5321_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5322" class="ax_default _文本段落">
+                <div id="u5322_div" class=""></div>
+                <div id="u5322_text" class="text ">
+                  <p><span>能源流向</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u5311_state1" class="panel_state" data-label="收缩" style="visibility: hidden;">
+          <div id="u5311_state1_content" class="panel_state_content">
+
+            <!-- 用能诊断-1 (组合) -->
+            <div id="u5323" class="ax_default" data-label="用能诊断-1" selectiongroup="u5309系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u5324" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u5324_div" class=""></div>
+                <div id="u5324_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u5325" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u5325_div" class=""></div>
+                <div id="u5325_text" class="text ">
+                  <p><span>用能诊断</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u5326" class="ax_default icon">
+                <img id="u5326_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u5326_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u5327" class="ax_default _形状">
+                <img id="u5327_img" class="img " src="images/用能诊断-损耗分析/u5202.svg"/>
+                <div id="u5327_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5328" class="ax_default box_1">
+        <div id="u5328_div" class=""></div>
+        <div id="u5328_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5329" class="ax_default _文本段落">
+        <div id="u5329_div" class=""></div>
+        <div id="u5329_text" class="text ">
+          <p><span>能效分析</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u5330" class="ax_default ellipse">
+        <img id="u5330_img" class="img " src="images/实时监测-计量仪表/u571.svg"/>
+        <div id="u5330_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 分项分析 (动态面板) -->
+      <div id="u5331" class="ax_default" data-label="分项分析">
+        <div id="u5331_state0" class="panel_state" data-label="展开" style="">
+          <div id="u5331_state0_content" class="panel_state_content">
+
+            <!-- 分项分析-2 (组合) -->
+            <div id="u5332" class="ax_default" data-label="分项分析-2" selectiongroup="u5309系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5333" class="ax_default box_1">
+                <div id="u5333_div" class=""></div>
+                <div id="u5333_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5334" class="ax_default _文本段落">
+                <div id="u5334_div" class=""></div>
+                <div id="u5334_text" class="text ">
+                  <p><span>用能考核</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u5335" class="ax_default icon">
+                <img id="u5335_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u5335_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u5336" class="ax_default _形状">
+                <img id="u5336_img" class="img " src="images/用能诊断-损耗分析/u5222.svg"/>
+                <div id="u5336_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 班组用能 (组合) -->
+            <div id="u5337" class="ax_default" data-label="班组用能" selectiongroup="u5309系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5338" class="ax_default box_1">
+                <div id="u5338_div" class=""></div>
+                <div id="u5338_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5339" class="ax_default _文本段落">
+                <div id="u5339_div" class=""></div>
+                <div id="u5339_text" class="text ">
+                  <p><span>班组用能</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 单位产品用能 (组合) -->
+            <div id="u5340" class="ax_default" data-label="单位产品用能" selectiongroup="u5309系统-二级" data-left="0" data-top="123" data-width="260" data-height="40">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5341" class="ax_default box_1">
+                <div id="u5341_div" class=""></div>
+                <div id="u5341_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5342" class="ax_default _文本段落">
+                <div id="u5342_div" class=""></div>
+                <div id="u5342_text" class="text ">
+                  <p><span>产品用能</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 分项系统用能 (组合) -->
+            <div id="u5343" class="ax_default" data-label="分项系统用能" selectiongroup="u5309系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5344" class="ax_default box_1">
+                <div id="u5344_div" class=""></div>
+                <div id="u5344_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5345" class="ax_default _文本段落">
+                <div id="u5345_div" class=""></div>
+                <div id="u5345_text" class="text ">
+                  <p><span>分项系统用能</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u5331_state1" class="panel_state" data-label="缩进" style="visibility: hidden;">
+          <div id="u5331_state1_content" class="panel_state_content">
+
+            <!-- 分项分析-1 (组合) -->
+            <div id="u5346" class="ax_default" data-label="分项分析-1" selectiongroup="u5309系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5347" class="ax_default box_1">
+                <div id="u5347_div" class=""></div>
+                <div id="u5347_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (矩形) -->
+              <div id="u5348" class="ax_default _文本段落">
+                <div id="u5348_div" class=""></div>
+                <div id="u5348_text" class="text ">
+                  <p><span>用能考核</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u5349" class="ax_default icon">
+                <img id="u5349_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u5349_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u5350" class="ax_default _形状">
+                <img id="u5350_img" class="img " src="images/用能诊断-损耗分析/u5222.svg"/>
+                <div id="u5350_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5351" class="ax_default _形状">
+        <img id="u5351_img" class="img " src="images/用能诊断-损耗分析/u5237.svg"/>
+        <div id="u5351_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+      <div id="u5309" style="display:none; visibility:hidden;"></div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5352" class="ax_default box_1">
+        <div id="u5352_div" class=""></div>
+        <div id="u5352_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (下拉列表) -->
+      <div id="u5353" class="ax_default droplist">
+        <img id="u5353_img" class="img " src="images/实时监测-计量仪表/u2361.svg"/>
+        <select id="u5353_input" class="u5353_input">
+          <option class="u5353_input_option" value="XX企业用能项目">XX企业用能项目</option>
+          <option class="u5353_input_option" value="XX建筑用能项目">XX建筑用能项目</option>
+        </select>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5354" class="ax_default box_1">
+        <div id="u5354_div" class=""></div>
+        <div id="u5354_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u5355" class="ax_default" data-left="1054" data-top="160" data-width="80" data-height="30">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5356" class="ax_default box_11">
+          <div id="u5356_div" class=""></div>
+          <div id="u5356_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5357" class="ax_default _三级标题">
+          <div id="u5357_div" class=""></div>
+          <div id="u5357_text" class="text ">
+            <p><span>查询</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u5358" class="ax_default _形状">
+          <img id="u5358_img" class="img " src="images/实时监测-计量仪表/u501_mouseOver.svg"/>
+          <div id="u5358_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5359" class="ax_default _二级标题">
+        <div id="u5359_div" class=""></div>
+        <div id="u5359_text" class="text ">
+          <p><span>时间范围：</span></p>
+        </div>
+      </div>
+
+      <!-- 时间设置 (动态面板) -->
+      <div id="u5360" class="ax_default" data-label="时间设置">
+        <div id="u5360_state0" class="panel_state" data-label="日" style="">
+          <div id="u5360_state0_content" class="panel_state_content">
+
+            <!-- 开始时间-f (文本框) -->
+            <div id="u5361" class="ax_default text_field" data-label="开始时间-f">
+              <div id="u5361_div" class=""></div>
+              <input id="u5361_input" type="date" value="" class="u5361_input"/>
+            </div>
+
+            <!-- 截止时间-f (文本框) -->
+            <div id="u5362" class="ax_default text_field" data-label="截止时间-f">
+              <div id="u5362_div" class=""></div>
+              <input id="u5362_input" type="date" value="" class="u5362_input"/>
+            </div>
+
+            <!-- Unnamed (矩形) -->
+            <div id="u5363" class="ax_default _二级标题">
+              <div id="u5363_div" class=""></div>
+              <div id="u5363_text" class="text ">
+                <p><span>-</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u5364" class="ax_default" selectiongroup="流向" data-left="400" data-top="155" data-width="100" data-height="35">
+
+        <!-- 水流向-按钮 (矩形) -->
+        <div id="u5365" class="ax_default box_1" data-label="水流向-按钮">
+          <div id="u5365_div" class=""></div>
+          <div id="u5365_text" class="text ">
+            <p><span>用水</span></p>
+          </div>
+        </div>
+
+        <!-- 水标识 (形状) -->
+        <div id="u5366" class="ax_default _形状" data-label="水标识">
+          <img id="u5366_img" class="img " src="images/用能诊断-能源流向/水标识_u5366.svg"/>
+          <div id="u5366_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u5367" class="ax_default" selectiongroup="流向" data-left="300" data-top="155" data-width="100" data-height="35">
+
+        <!-- 电流向-按钮 (矩形) -->
+        <div id="u5368" class="ax_default box_1 selected" data-label="电流向-按钮">
+          <div id="u5368_div" class="selected"></div>
+          <div id="u5368_text" class="text ">
+            <p><span>用电</span></p>
+          </div>
+        </div>
+
+        <!-- 电标识 (形状) -->
+        <div id="u5369" class="ax_default _形状 selected" data-label="电标识">
+          <img id="u5369_img" class="img " src="images/用能诊断-能源流向/电标识_u5369_selected.svg"/>
+          <div id="u5369_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5370" class="ax_default _形状">
+        <img id="u5370_img" class="img " src="images/用能诊断-能源流向/u5370.svg"/>
+        <div id="u5370_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5371" class="ax_default _形状">
+        <img id="u5371_img" class="img " src="images/用能诊断-能源流向/u5371.svg"/>
+        <div id="u5371_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5372" class="ax_default _形状">
+        <img id="u5372_img" class="img " src="images/用能诊断-能源流向/u5372.svg"/>
+        <div id="u5372_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5373" class="ax_default _形状">
+        <img id="u5373_img" class="img " src="images/用能诊断-能源流向/u5373.svg"/>
+        <div id="u5373_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5374" class="ax_default _形状">
+        <img id="u5374_img" class="img " src="images/用能诊断-能源流向/u5374.svg"/>
+        <div id="u5374_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5375" class="ax_default _形状">
+        <img id="u5375_img" class="img " src="images/用能诊断-能源流向/u5375.svg"/>
+        <div id="u5375_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5376" class="ax_default _形状">
+        <img id="u5376_img" class="img " src="images/用能诊断-能源流向/u5376.svg"/>
+        <div id="u5376_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5377" class="ax_default _形状">
+        <img id="u5377_img" class="img " src="images/用能诊断-能源流向/u5377.svg"/>
+        <div id="u5377_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5378" class="ax_default _形状">
+        <img id="u5378_img" class="img " src="images/用能诊断-能源流向/u5378.svg"/>
+        <div id="u5378_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5379" class="ax_default _形状">
+        <img id="u5379_img" class="img " src="images/用能诊断-能源流向/u5379.svg"/>
+        <div id="u5379_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5380" class="ax_default _形状">
+        <img id="u5380_img" class="img " src="images/用能诊断-能源流向/u5380.svg"/>
+        <div id="u5380_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5381" class="ax_default _形状">
+        <img id="u5381_img" class="img " src="images/用能诊断-能源流向/u5381.svg"/>
+        <div id="u5381_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5382" class="ax_default _形状">
+        <img id="u5382_img" class="img " src="images/用能诊断-能源流向/u5382.svg"/>
+        <div id="u5382_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5383" class="ax_default _形状">
+        <img id="u5383_img" class="img " src="images/用能诊断-能源流向/u5383.svg"/>
+        <div id="u5383_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5384" class="ax_default _形状">
+        <img id="u5384_img" class="img " src="images/用能诊断-能源流向/u5384.svg"/>
+        <div id="u5384_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u5385" class="ax_default _形状">
+        <img id="u5385_img" class="img " src="images/用能诊断-能源流向/u5385.svg"/>
+        <div id="u5385_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 8846c17e e2ed 4b83 b9c1 9c1c5c2c702d (组合) -->
+      <div id="u5386" class="ax_default" data-label="8846c17e e2ed 4b83 b9c1 9c1c5c2c702d" data-left="558" data-top="365" data-width="22" data-height="558">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5387" class="ax_default _形状">
+          <div id="u5387_div" class=""></div>
+          <div id="u5387_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- abe2631d e3f5 4c66 bdc8 1e7915abdef9 (组合) -->
+      <div id="u5388" class="ax_default" data-label="abe2631d e3f5 4c66 bdc8 1e7915abdef9" data-left="929" data-top="348" data-width="22" data-height="169">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5389" class="ax_default _形状">
+          <div id="u5389_div" class=""></div>
+          <div id="u5389_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- a04f52b8 b940 4ba1 b250 2008fdf46682 (组合) -->
+      <div id="u5390" class="ax_default" data-label="a04f52b8 b940 4ba1 b250 2008fdf46682" data-left="929" data-top="526" data-width="22" data-height="280">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5391" class="ax_default _形状">
+          <div id="u5391_div" class=""></div>
+          <div id="u5391_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- eb6e5199 29d7 48e0 a862 ec55d98647f1 (组合) -->
+      <div id="u5392" class="ax_default" data-label="eb6e5199 29d7 48e0 a862 ec55d98647f1" data-left="929" data-top="814" data-width="22" data-height="113">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5393" class="ax_default _形状">
+          <div id="u5393_div" class=""></div>
+          <div id="u5393_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8d5222b8 f2d1 41c7 bd41 14fbb86e46c9 (组合) -->
+      <div id="u5394" class="ax_default" data-label="8d5222b8 f2d1 41c7 bd41 14fbb86e46c9" data-left="1301" data-top="326" data-width="22" data-height="113">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5395" class="ax_default _形状">
+          <div id="u5395_div" class=""></div>
+          <div id="u5395_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 27b2bec5 f960 4409 86f9 0510ead46b02 (组合) -->
+      <div id="u5396" class="ax_default" data-label="27b2bec5 f960 4409 86f9 0510ead46b02" data-left="1301" data-top="447" data-width="22" data-height="58">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5397" class="ax_default _形状">
+          <div id="u5397_div" class=""></div>
+          <div id="u5397_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2025d70d eb23 437d 8f33 7aab135e3654 (组合) -->
+      <div id="u5398" class="ax_default" data-label="2025d70d eb23 437d 8f33 7aab135e3654" data-left="1301" data-top="513" data-width="22" data-height="169">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5399" class="ax_default _形状">
+          <div id="u5399_div" class=""></div>
+          <div id="u5399_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- b1d31421 d780 419d 94e4 4395ecbf8e87 (组合) -->
+      <div id="u5400" class="ax_default" data-label="b1d31421 d780 419d 94e4 4395ecbf8e87" data-left="1301" data-top="690" data-width="22" data-height="113">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5401" class="ax_default _形状">
+          <div id="u5401_div" class=""></div>
+          <div id="u5401_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ac1c800f 4cda 40c7 bc08 256b52330e6d (组合) -->
+      <div id="u5402" class="ax_default" data-label="ac1c800f 4cda 40c7 bc08 256b52330e6d" data-left="1301" data-top="811" data-width="22" data-height="113">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5403" class="ax_default _形状">
+          <div id="u5403_div" class=""></div>
+          <div id="u5403_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- d00d10d9 8b40 458c 9d52 99340a1351a4 (组合) -->
+      <div id="u5404" class="ax_default" data-label="d00d10d9 8b40 458c 9d52 99340a1351a4" data-left="1672" data-top="321" data-width="22" data-height="85">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5405" class="ax_default _形状">
+          <div id="u5405_div" class=""></div>
+          <div id="u5405_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5406" class="ax_default _形状">
+        <div id="u5406_div" class=""></div>
+        <div id="u5406_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 7e9e9201 20f1 43aa 9934 98dc2f2875b4 (组合) -->
+      <div id="u5407" class="ax_default" data-label="7e9e9201 20f1 43aa 9934 98dc2f2875b4" data-left="1672" data-top="452" data-width="22" data-height="44">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5408" class="ax_default _形状">
+          <div id="u5408_div" class=""></div>
+          <div id="u5408_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5409" class="ax_default _形状">
+        <div id="u5409_div" class=""></div>
+        <div id="u5409_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 66329245 1941 459b a43a 7940afea0bed (组合) -->
+      <div id="u5410" class="ax_default" data-label="66329245 1941 459b a43a 7940afea0bed" data-left="1672" data-top="528" data-width="22" data-height="169">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5411" class="ax_default _形状">
+          <div id="u5411_div" class=""></div>
+          <div id="u5411_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3d5981a9 163f 4e4a bf04 0c5e5d0fd063 (组合) -->
+      <div id="u5412" class="ax_default" data-label="3d5981a9 163f 4e4a bf04 0c5e5d0fd063" data-left="1672" data-top="705" data-width="22" data-height="113">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5413" class="ax_default _形状">
+          <div id="u5413_div" class=""></div>
+          <div id="u5413_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- d1dab439 4ce2 4cc5 8e66 cced07fe8bed (组合) -->
+      <div id="u5414" class="ax_default" data-label="d1dab439 4ce2 4cc5 8e66 cced07fe8bed" data-left="1672" data-top="826" data-width="22" data-height="85">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5415" class="ax_default _形状">
+          <div id="u5415_div" class=""></div>
+          <div id="u5415_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5416" class="ax_default _形状">
+        <div id="u5416_div" class=""></div>
+        <div id="u5416_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 7c62c09a bc5a 481d 99fa ac753cc107dc (组合) -->
+      <div id="u5417" class="ax_default" data-label="7c62c09a bc5a 481d 99fa ac753cc107dc" data-left="474" data-top="85" data-width="2" data-height="2">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5418" class="ax_default _形状">
+          <div id="u5418_div" class=""></div>
+          <div id="u5418_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u5419" class="ax_default _形状">
+          <div id="u5419_div" class=""></div>
+          <div id="u5419_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5420" class="ax_default _文本段落">
+        <div id="u5420_div" class=""></div>
+        <div id="u5420_text" class="text ">
+          <p><span style="font-family:'Arial Negreta', 'Arial Normal', 'Arial', sans-serif;font-weight:700;">XX</span><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">企业</span></p><p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">用电</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5421" class="ax_default _文本段落">
+        <div id="u5421_div" class=""></div>
+        <div id="u5421_text" class="text ">
+          <p><span>综合办公区</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5422" class="ax_default _文本段落">
+        <div id="u5422_div" class=""></div>
+        <div id="u5422_text" class="text ">
+          <p><span>生产车间</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5423" class="ax_default _文本段落">
+        <div id="u5423_div" class=""></div>
+        <div id="u5423_text" class="text ">
+          <p><span>仓储库房</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5424" class="ax_default _文本段落">
+        <div id="u5424_div" class=""></div>
+        <div id="u5424_text" class="text ">
+          <p><span>10</span><span>层</span><span>- A</span><span>区</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5425" class="ax_default _文本段落">
+        <div id="u5425_div" class=""></div>
+        <div id="u5425_text" class="text ">
+          <p><span>10</span><span>层</span><span>- B</span><span>区</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5426" class="ax_default _文本段落">
+        <div id="u5426_div" class=""></div>
+        <div id="u5426_text" class="text ">
+          <p><span>F01</span><span>产线</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5427" class="ax_default _文本段落">
+        <div id="u5427_div" class=""></div>
+        <div id="u5427_text" class="text ">
+          <p><span>F02</span><span>产线</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5428" class="ax_default _文本段落">
+        <div id="u5428_div" class=""></div>
+        <div id="u5428_text" class="text ">
+          <p><span>仓库</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5429" class="ax_default _文本段落">
+        <div id="u5429_div" class=""></div>
+        <div id="u5429_text" class="text ">
+          <p><span>A</span><span>区空调系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5430" class="ax_default _文本段落">
+        <div id="u5430_div" class=""></div>
+        <div id="u5430_text" class="text ">
+          <p><span>B</span><span>区空调系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5431" class="ax_default _文本段落">
+        <div id="u5431_div" class=""></div>
+        <div id="u5431_text" class="text ">
+          <p><span>101</span><span>数控机床</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5432" class="ax_default _文本段落">
+        <div id="u5432_div" class=""></div>
+        <div id="u5432_text" class="text ">
+          <p><span>102</span><span>数控机床</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5433" class="ax_default _文本段落">
+        <div id="u5433_div" class=""></div>
+        <div id="u5433_text" class="text ">
+          <p><span>C</span><span>区空调系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5434" class="ax_default _文本段落">
+        <div id="u5434_div" class=""></div>
+        <div id="u5434_text" class="text ">
+          <p><span style="font-family:'Arial Normal', 'Arial', sans-serif;">A</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">区照明系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5435" class="ax_default _文本段落">
+        <div id="u5435_div" class=""></div>
+        <div id="u5435_text" class="text ">
+          <p><span style="font-family:'Arial Normal', 'Arial', sans-serif;">B</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">区照明系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5436" class="ax_default _文本段落">
+        <div id="u5436_div" class=""></div>
+        <div id="u5436_text" class="text ">
+          <p><span style="font-family:'Arial Normal', 'Arial', sans-serif;">C</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">区照明系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u5437" class="ax_default box_1">
+        <div id="u5437_div" class=""></div>
+        <div id="u5437_text" class="text ">
+          <p><span>电能流向分析</span></p>
+        </div>
+      </div>
+
+      <!-- 用电量-车间 (矩形) -->
+      <div id="u5438" class="ax_default label ax_default_hidden" data-label="用电量-车间" style="display:none; visibility: hidden">
+        <div id="u5438_div" class=""></div>
+        <div id="u5438_text" class="text ">
+          <p><span>用量：20561.56 kWh</span></p><p><span>占比：65.38%</span></p>
+        </div>
+      </div>
+    </div>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

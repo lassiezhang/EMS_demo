@@ -1,0 +1,1600 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>用能价格管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/用能价格管理/styles.css" type="text/css" rel="stylesheet"/>
+    <style type="text/css">
+@font-face {
+/**
+ * Created by AxurePro on 2020/3/26.
+ * Axure.js,为解析echarts代码使用
+ * 文件博航
+ */
+//}</style>
+<script type="text/javascript">
+window.open = window.open;
+window.open = function () {
+
+    function init() {
+        if (window.$) {
+            $(document).ready(function () {
+                setTimeout(function () {
+                    window.open('javascript:');
+                }, 0);
+            });
+        } else {
+            setTimeout(init, 0);
+        }
+    }
+
+    setTimeout(init, 0);
+    if (typeof String.prototype.trim !== "function") {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, "");
+        };
+    }
+
+    function startSplitMouse(evt) {
+        if ( opts.outline )
+            zombie = zombie || bar.clone(false).insertAfter(A);
+        panes.css("-webkit-user-select", "none");   // Safari selects A/B text on a move
+        bar.addClass(opts.activeClass);
+        $('<div class="splitterMask"></div>').insertAfter(bar);
+        A._posSplit = A[0][opts.pxSplit] - evt[opts.eventPos];
+        $(document)
+            .bind("mousemove", doSplitMouse)
+            .bind("mouseup", endSplitMouse);
+    }
+    var showwindow = window.open;
+    var showdialog = function (echartcode, itemname, value, data) {
+        if (data !== undefined) return showwindow(echartcode, itemname, value, data);
+        if (value !== undefined) return showwindow(echartcode, itemname, value);
+        if (itemname !== undefined) return showwindow(echartcode, itemname);
+        return showwindow(echartcode);
+    };
+    return function (echartcode, itemname, value, data) {
+        if ((echartcode.substring(0, 11) !== "javascript:") || (!$axure)) {
+            if (window.openReplace) {
+                window.openReplace = false;
+                window.location.replace(echartcode);
+                return false;
+            }
+            return showdialog(echartcode, itemname, value, data);
+        }
+        function doSplitMouse(evt) {
+            var newPos = A._posSplit+evt[opts.eventPos];
+            if ( opts.outline ) {
+                newPos = Math.max(0, Math.min(newPos, splitter._DA - bar._DA));
+                bar.css(opts.origin, newPos);
+            } else
+                resplit(newPos);
+        }
+        function endSplitMouse(evt) {
+            $('div.splitterMask').remove();
+            bar.removeClass(opts.activeClass);
+            var newPos = A._posSplit+evt[opts.eventPos];
+            if ( opts.outline ) {
+                zombie.remove(); zombie = null;
+                resplit(newPos);
+            }
+            panes.css("-webkit-user-select", "text");   // let Safari select text again
+            $(document)
+                .unbind("mousemove", doSplitMouse)
+                .unbind("mouseup", endSplitMouse);
+        }
+        function resplit(newPos) {
+            // Constrain new splitbar position to fit pane size limits
+            newPos = Math.max(A._min, splitter._DA - B._max,
+                Math.min(newPos, A._max, splitter._DA - bar._DA - B._min));
+            // Resize/position the two panes
+            bar._DA = bar[0][opts.pxSplit];      // bar size may change during dock
+
+            var posOffset = bar.is(':visible') ? bar._DA - 1 : 0;
+
+            bar.css(opts.origin, newPos - posOffset).css(opts.fixed, splitter._DF);
+            A.css(opts.origin, 0).css(opts.split, newPos).css(opts.fixed,  splitter._DF);
+            B.css(opts.origin, newPos + bar._DA - posOffset)
+                .css(opts.split, splitter._DA-bar._DA-newPos).css(opts.fixed,  splitter._DF);
+            // IE fires resize for us; all others pay cash
+            if ( !IE_10_AND_BELOW )
+                panes.trigger("resize");
+        }
+
+        var htmlcode = echartcode.substring(11).trim();
+        if (false && console) console.log("** " + htmlcode + " **\n");
+        if ((htmlcode[0] === '/') && (htmlcode[1] === '/')) return false;
+        if ((htmlcode[0] == '@') || (htmlcode[0] == '#')) {
+
+            var src = htmlcode.split(":");
+            htmlcode = $axure(src[0].trim()).text();
+            if (!htmlcode) return $axure.error('Widget "' + src[0] + '" not found.');
+            var l = htmlcode.split(':');
+            htmlcode = htmlcode.replace("[[" + l[0].trim() + "]]", JSON.stringify(l.slice(1).join(':')).slice(1, -1).replace("'", "\\'"));
+            if (src.length > 1) {
+                var canvas = $axure(src[1].trim()).$().children("iframe")[0];
+                if (!canvas) return $axure.error('Widget InlineFrame "' + src[1] + '" not found.');
+                canvas = (canvas.contentWindow ? canvas.contentWindow : canvas.contentDocument.document ? canvas.contentDocument.document : canvas.contentDocument).document;
+                canvas.open("text/html", "replace");
+                canvas.write(htmlcode);
+                canvas.close();
+                return false;
+            }
+        }
+        function dimSum(jq, dims) {
+            // Opera returns -1 for missing min/max width, turn into 0
+            var sum = 0;
+            for ( var i=1; i < arguments.length; i++ )
+                sum += Math.max(parseInt(jq.css(arguments[i])) || 0, 0);
+            return sum;
+        }
+        if (htmlcode !== '') {
+            if ($axure.debug) htmlcode = eval(htmlcode); else try {
+                htmlcode = eval(htmlcode);
+            } catch (err) {
+                return $axure.error("Exception:\n" + err + "\n\nTrace:\n" + err.stack + "\n\nScript:\n" + htmlcode.slice(0, 1024));
+            }
+            if (htmlcode) return showdialog('javascript: ' + JSON.stringify(htmlcode) + ';', itemname, value, data);
+        }
+        return false;
+    };
+    function getInitialUrl() {
+        var pageName = getHashStringVar("p");
+        if(pageName.length > 0) return pageName + ".html";
+        else {
+            var url = getFirstPageUrl($axure.document.sitemap.rootNodes);
+            return (url ? url : "about:blank");
+        }
+    }
+
+    function getFirstPageUrl(nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            if (node.url) return node.url;
+            else {
+                var hasChildren = (node.children && node.children.length > 0);
+                if (hasChildren) {
+                    var url = getFirstPageUrl(node.children);
+                    if (url) return url;
+                }
+            }
+        }
+        return null;
+    }
+
+}();
+//</script>
+<style type="text/css">{
+}
+    </style>
+    <script src="resources/scripts/jquery-3.2.1.min.js"></script>
+    <script src="resources/scripts/axure/axQuery.js"></script>
+    <script src="resources/scripts/axure/globals.js"></script>
+    <script src="resources/scripts/axutils.js"></script>
+    <script src="resources/scripts/axure/annotation.js"></script>
+    <script src="resources/scripts/axure/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/doc.js"></script>
+    <script src="resources/scripts/messagecenter.js"></script>
+    <script src="resources/scripts/axure/events.js"></script>
+    <script src="resources/scripts/axure/recording.js"></script>
+    <script src="resources/scripts/axure/action.js"></script>
+    <script src="resources/scripts/axure/expr.js"></script>
+    <script src="resources/scripts/axure/geometry.js"></script>
+    <script src="resources/scripts/axure/flyout.js"></script>
+    <script src="resources/scripts/axure/model.js"></script>
+    <script src="resources/scripts/axure/repeater.js"></script>
+    <script src="resources/scripts/axure/sto.js"></script>
+    <script src="resources/scripts/axure/utils.temp.js"></script>
+    <script src="resources/scripts/axure/variables.js"></script>
+    <script src="resources/scripts/axure/drag.js"></script>
+    <script src="resources/scripts/axure/move.js"></script>
+    <script src="resources/scripts/axure/visibility.js"></script>
+    <script src="resources/scripts/axure/style.js"></script>
+    <script src="resources/scripts/axure/adaptive.js"></script>
+    <script src="resources/scripts/axure/tree.js"></script>
+    <script src="resources/scripts/axure/init.temp.js"></script>
+    <script src="resources/scripts/axure/legacy.js"></script>
+    <script src="resources/scripts/axure/viewer.js"></script>
+    <script src="resources/scripts/axure/math.js"></script>
+    <script src="resources/scripts/axure/jquery.nicescroll.min.js"></script>
+    <script src="data/document.js"></script>
+    <script src="files/用能价格管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10645" class="ax_default box_1">
+        <div id="u10645_div" class=""></div>
+        <div id="u10645_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 上框 (矩形) -->
+      <div id="u10646" class="ax_default box_1" data-label="上框">
+        <div id="u10646_div" class=""></div>
+        <div id="u10646_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10647" class="ax_default _文本段落">
+        <div id="u10647_div" class=""></div>
+        <div id="u10647_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">系统管理</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;"> / </span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">用能价格管理</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;"> </span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10648" class="ax_default _文本段落">
+        <div id="u10648_div" class=""></div>
+        <div id="u10648_text" class="text ">
+          <p><span>欢迎</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (形状) -->
+      <div id="u10649" class="ax_default icon">
+        <img id="u10649_img" class="img " src="images/实时监测-计量仪表/u548.svg"/>
+        <div id="u10649_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (EMS-顶部栏) -->
+
+      <!-- 主菜单 (动态面板) -->
+      <div id="u10651" class="ax_default" data-label="主菜单">
+        <div id="u10651_state0" class="panel_state" data-label="State1" style="">
+          <div id="u10651_state0_content" class="panel_state_content">
+
+            <!-- 能耗统计-顶部 (矩形) -->
+            <div id="u10652" class="ax_default _文本段落" data-label="能耗统计-顶部" selectiongroup="u10650T-Menu">
+              <img id="u10652_img" class="img " src="images/综合概览-大屏/能耗统计-顶部_u3.svg"/>
+              <div id="u10652_text" class="text ">
+                <p><span>能耗统计</span></p>
+              </div>
+            </div>
+
+            <!-- 实时监控-顶部 (矩形) -->
+            <div id="u10653" class="ax_default _文本段落" data-label="实时监控-顶部" selectiongroup="u10650T-Menu">
+              <img id="u10653_img" class="img " src="images/综合概览-大屏/实时监控-顶部_u4.svg"/>
+              <div id="u10653_text" class="text ">
+                <p><span>实时监控</span></p>
+              </div>
+            </div>
+
+            <!-- 综合概览-顶部 (矩形) -->
+            <div id="u10654" class="ax_default _文本段落" data-label="综合概览-顶部" selectiongroup="u10650T-Menu">
+              <img id="u10654_img" class="img " src="images/综合概览-大屏/实时监控-顶部_u4.svg"/>
+              <div id="u10654_text" class="text ">
+                <p><span>综合概览</span></p>
+              </div>
+            </div>
+
+            <!-- 能效分析-顶部 (矩形) -->
+            <div id="u10655" class="ax_default _文本段落" data-label="能效分析-顶部" selectiongroup="u10650T-Menu">
+              <div id="u10655_div" class=""></div>
+              <div id="u10655_text" class="text ">
+                <p><span>能效分析</span></p>
+              </div>
+            </div>
+
+            <!-- 系统管理-顶部 (矩形) -->
+            <div id="u10656" class="ax_default _文本段落" data-label="系统管理-顶部" selectiongroup="u10650T-Menu">
+              <div id="u10656_div" class=""></div>
+              <div id="u10656_text" class="text ">
+                <p><span>系统管理</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="u10650" style="display:none; visibility:hidden;"></div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10657" class="ax_default label1">
+        <div id="u10657_div" class=""></div>
+        <div id="u10657_text" class="text ">
+          <p><span style="color:#70B603;">EMS </span><span style="color:#FFFFFF;">智慧能源管理系统</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (文本框) -->
+      <div id="u10658" class="ax_default text_field disabled">
+        <div id="u10658_div" class="disabled"></div>
+        <input id="u10658_input" type="text" value="LOGO" class="u10658_input" disabled/>
+      </div>
+
+      <!-- Unnamed (下拉列表) -->
+      <div id="u10659" class="ax_default droplist">
+        <div id="u10659_div" class=""></div>
+        <select id="u10659_input" class="u10659_input">
+          <option class="u10659_input_option" selected value="admin">admin</option>
+          <option class="u10659_input_option" value="账号信息">账号信息</option>
+          <option class="u10659_input_option" value="修改密码">修改密码</option>
+          <option class="u10659_input_option" value="退出登录">退出登录</option>
+        </select>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u10660" class="ax_default" data-left="1683" data-top="20" data-width="20" data-height="20">
+
+        <!-- Unnamed (形状) -->
+        <div id="u10661" class="ax_default _形状">
+          <img id="u10661_img" class="img " src="images/实时监测-计量仪表/u560.svg"/>
+          <div id="u10661_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10662" class="ax_default _形状">
+          <img id="u10662_img" class="img " src="images/实时监测-计量仪表/u561.svg"/>
+          <div id="u10662_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10663" class="ax_default _形状">
+          <img id="u10663_img" class="img " src="images/实时监测-计量仪表/u562.svg"/>
+          <div id="u10663_text" class="text ">
+            <p><span>2</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10664" class="ax_default _形状">
+          <img id="u10664_img" class="img " src="images/实时监测-计量仪表/u563.svg"/>
+          <div id="u10664_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10665" class="ax_default _形状">
+          <img id="u10665_img" class="img " src="images/实时监测-计量仪表/u564.svg"/>
+          <div id="u10665_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10666" class="ax_default _形状">
+          <img id="u10666_img" class="img " src="images/实时监测-计量仪表/u565.svg"/>
+          <div id="u10666_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10667" class="ax_default box_1">
+        <div id="u10667_div" class=""></div>
+        <div id="u10667_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10668" class="ax_default _文本段落">
+        <div id="u10668_div" class=""></div>
+        <div id="u10668_text" class="text ">
+          <p><span style="font-family:'Arial Normal', 'Arial', sans-serif;">Copyright © Hardy, All Rights Reserved</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">，EMS Systems，</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;">QQ</span><span style="font-family:'PingFangSC-Regular', 'PingFang SC', sans-serif;">：</span><span style="font-family:'Arial Normal', 'Arial', sans-serif;">21583813</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (系统设置-菜单) -->
+
+      <!-- 下框 (矩形) -->
+      <div id="u10670" class="ax_default box_1" data-label="下框">
+        <div id="u10670_div" class=""></div>
+        <div id="u10670_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 单元分区 (动态面板) -->
+      <div id="u10671" class="ax_default" data-label="单元分区">
+        <div id="u10671_state0" class="panel_state" data-label="收缩" style="">
+          <div id="u10671_state0_content" class="panel_state_content">
+
+            <!-- 单元分区-1 (组合) -->
+            <div id="u10672" class="ax_default" data-label="单元分区-1" selectiongroup="u10669系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10673" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10673_div" class=""></div>
+                <div id="u10673_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10674" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10674_div" class=""></div>
+                <div id="u10674_text" class="text ">
+                  <p><span>单元分区管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10675" class="ax_default icon">
+                <img id="u10675_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u10675_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10676" class="ax_default _形状">
+                <img id="u10676_img" class="img " src="images/分区-用能分区管理/u7302.svg"/>
+                <div id="u10676_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u10671_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+          <div id="u10671_state1_content" class="panel_state_content">
+
+            <!-- 单元分区-2 (组合) -->
+            <div id="u10677" class="ax_default" data-label="单元分区-2" selectiongroup="u10669系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10678" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10678_div" class=""></div>
+                <div id="u10678_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10679" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10679_div" class=""></div>
+                <div id="u10679_text" class="text ">
+                  <p><span>单元分区管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10680" class="ax_default icon">
+                <img id="u10680_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u10680_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10681" class="ax_default _形状">
+                <img id="u10681_img" class="img " src="images/分区-用能分区管理/u7302.svg"/>
+                <div id="u10681_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 分区配置 (组合) -->
+            <div id="u10682" class="ax_default" data-label="分区配置" selectiongroup="u10669系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10683" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10683_div" class=""></div>
+                <div id="u10683_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10684" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10684_div" class=""></div>
+                <div id="u10684_text" class="text ">
+                  <p><span>用能分区配置</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 统计周期 (组合) -->
+            <div id="u10685" class="ax_default" data-label="统计周期" selectiongroup="u10669系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10686" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10686_div" class=""></div>
+                <div id="u10686_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10687" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10687_div" class=""></div>
+                <div id="u10687_text" class="text ">
+                  <p><span>统计周期配置</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 线损分析 (组合) -->
+            <div id="u10688" class="ax_default" data-label="线损分析" selectiongroup="u10669系统-二级" data-left="0" data-top="123" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10689" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10689_div" class=""></div>
+                <div id="u10689_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10690" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10690_div" class=""></div>
+                <div id="u10690_text" class="text ">
+                  <p><span>线损分析定义</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 设备管理 (动态面板) -->
+      <div id="u10691" class="ax_default" data-label="设备管理">
+        <div id="u10691_state0" class="panel_state" data-label="缩进" style="">
+          <div id="u10691_state0_content" class="panel_state_content">
+
+            <!-- 设备管理-1 (组合) -->
+            <div id="u10692" class="ax_default" data-label="设备管理-1" selectiongroup="u10669系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10693" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10693_div" class=""></div>
+                <div id="u10693_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10694" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10694_div" class=""></div>
+                <div id="u10694_text" class="text ">
+                  <p><span>用能设备管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10695" class="ax_default icon">
+                <img id="u10695_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u10695_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10696" class="ax_default _形状">
+                <img id="u10696_img" class="img " src="images/分区-用能分区管理/u7322.svg"/>
+                <div id="u10696_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u10691_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+          <div id="u10691_state1_content" class="panel_state_content">
+
+            <!-- 设备管理-2 (组合) -->
+            <div id="u10697" class="ax_default" data-label="设备管理-2" selectiongroup="u10669系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10698" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10698_div" class=""></div>
+                <div id="u10698_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10699" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10699_div" class=""></div>
+                <div id="u10699_text" class="text ">
+                  <p><span>用能设备管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10700" class="ax_default icon">
+                <img id="u10700_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u10700_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10701" class="ax_default _形状">
+                <img id="u10701_img" class="img " src="images/分区-用能分区管理/u7322.svg"/>
+                <div id="u10701_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 分项设备系统 (组合) -->
+            <div id="u10702" class="ax_default" data-label="分项设备系统" selectiongroup="u10669系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10703" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10703_div" class=""></div>
+                <div id="u10703_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10704" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10704_div" class=""></div>
+                <div id="u10704_text" class="text ">
+                  <p><span>分项系统</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 计量设备 (组合) -->
+            <div id="u10705" class="ax_default" data-label="计量设备" selectiongroup="u10669系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10706" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10706_div" class=""></div>
+                <div id="u10706_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10707" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10707_div" class=""></div>
+                <div id="u10707_text" class="text ">
+                  <p><span>计量仪表</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10708" class="ax_default box_1">
+        <div id="u10708_div" class=""></div>
+        <div id="u10708_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10709" class="ax_default _文本段落">
+        <div id="u10709_div" class=""></div>
+        <div id="u10709_text" class="text ">
+          <p><span style="font-family:'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC', sans-serif;font-weight:650;">系统管理</span><span style="font-family:'Impact', sans-serif;font-weight:900;">&nbsp; &nbsp; &nbsp; &nbsp; </span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (圆形) -->
+      <div id="u10710" class="ax_default ellipse">
+        <img id="u10710_img" class="img " src="images/实时监测-计量仪表/u571.svg"/>
+        <div id="u10710_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 设置 (形状) -->
+      <div id="u10711" class="ax_default _形状4" data-label="设置">
+        <img id="u10711_img" class="img " src="images/分区-用能分区管理/设置_u7337.svg"/>
+        <div id="u10711_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 告警规则 (动态面板) -->
+      <div id="u10712" class="ax_default" data-label="告警规则">
+        <div id="u10712_state0" class="panel_state" data-label="缩进" style="">
+          <div id="u10712_state0_content" class="panel_state_content">
+
+            <!-- 告警管理-1 (组合) -->
+            <div id="u10713" class="ax_default" data-label="告警管理-1" selectiongroup="u10669系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10714" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10714_div" class=""></div>
+                <div id="u10714_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10715" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10715_div" class=""></div>
+                <div id="u10715_text" class="text ">
+                  <p><span>告警规则配置</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10716" class="ax_default icon">
+                <img id="u10716_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u10716_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10717" class="ax_default _形状">
+                <img id="u10717_img" class="img " src="images/分区-用能分区管理/u7343.svg"/>
+                <div id="u10717_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u10712_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+          <div id="u10712_state1_content" class="panel_state_content">
+
+            <!-- 告警管理-2 (组合) -->
+            <div id="u10718" class="ax_default" data-label="告警管理-2" selectiongroup="u10669系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10719" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10719_div" class=""></div>
+                <div id="u10719_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10720" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10720_div" class=""></div>
+                <div id="u10720_text" class="text ">
+                  <p><span>告警规则配置</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10721" class="ax_default icon">
+                <img id="u10721_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u10721_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10722" class="ax_default _形状">
+                <img id="u10722_img" class="img " src="images/分区-用能分区管理/u7343.svg"/>
+                <div id="u10722_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用能预警设置 (组合) -->
+            <div id="u10723" class="ax_default" data-label="用能预警设置" selectiongroup="u10669系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10724" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10724_div" class=""></div>
+                <div id="u10724_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 用能预警 (矩形) -->
+              <div id="u10725" class="ax_default _文本段落" data-label="用能预警">
+                <div id="u10725_div" class=""></div>
+                <div id="u10725_text" class="text ">
+                  <p><span>用能预警设置</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 安全告警设置 (组合) -->
+            <div id="u10726" class="ax_default" data-label="安全告警设置" selectiongroup="u10669系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10727" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10727_div" class=""></div>
+                <div id="u10727_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10728" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10728_div" class=""></div>
+                <div id="u10728_text" class="text ">
+                  <p><span>电能质量告警</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 系统基础管理 (动态面板) -->
+      <div id="u10729" class="ax_default" data-label="系统基础管理">
+        <div id="u10729_state0" class="panel_state" data-label="缩进" style="">
+          <div id="u10729_state0_content" class="panel_state_content">
+
+            <!-- 基础配置-1 (组合) -->
+            <div id="u10730" class="ax_default" data-label="基础配置-1" selectiongroup="u10669系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10731" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10731_div" class=""></div>
+                <div id="u10731_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10732" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10732_div" class=""></div>
+                <div id="u10732_text" class="text ">
+                  <p><span>系统基础管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10733" class="ax_default icon">
+                <img id="u10733_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u10733_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10734" class="ax_default _形状">
+                <img id="u10734_img" class="img " src="images/分区-用能分区管理/u7360.svg"/>
+                <div id="u10734_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="u10729_state1" class="panel_state" data-label="展开" style="visibility: hidden;">
+          <div id="u10729_state1_content" class="panel_state_content">
+
+            <!-- 基础配置-2 (组合) -->
+            <div id="u10735" class="ax_default" data-label="基础配置-2" selectiongroup="u10669系统一级" data-left="0" data-top="0" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10736" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10736_div" class=""></div>
+                <div id="u10736_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10737" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10737_div" class=""></div>
+                <div id="u10737_text" class="text ">
+                  <p><span>系统基础管理</span></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10738" class="ax_default icon">
+                <img id="u10738_img" class="img " src="images/实时监测-计量仪表/u576.svg"/>
+                <div id="u10738_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- Unnamed (形状) -->
+              <div id="u10739" class="ax_default _形状">
+                <img id="u10739_img" class="img " src="images/分区-用能分区管理/u7360.svg"/>
+                <div id="u10739_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 组织管理 (组合) -->
+            <div id="u10740" class="ax_default" data-label="组织管理" selectiongroup="u10669系统-二级" data-left="0" data-top="41" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10741" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10741_div" class=""></div>
+                <div id="u10741_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10742" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10742_div" class=""></div>
+                <div id="u10742_text" class="text ">
+                  <p><span>组织管理</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用户管理 (组合) -->
+            <div id="u10743" class="ax_default" data-label="用户管理" selectiongroup="u10669系统-二级" data-left="0" data-top="82" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10744" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10744_div" class=""></div>
+                <div id="u10744_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10745" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10745_div" class=""></div>
+                <div id="u10745_text" class="text ">
+                  <p><span>用户管理</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 角色权限 (组合) -->
+            <div id="u10746" class="ax_default" data-label="角色权限" selectiongroup="u10669系统-二级" data-left="0" data-top="123" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10747" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10747_div" class=""></div>
+                <div id="u10747_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10748" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10748_div" class=""></div>
+                <div id="u10748_text" class="text ">
+                  <p><span>角色权限</span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 操作日志 (组合) -->
+            <div id="u10749" class="ax_default" data-label="操作日志" selectiongroup="u10669系统-二级" data-left="0" data-top="164" data-width="260" data-height="40">
+
+              <!-- 门禁菜单框 (矩形) -->
+              <div id="u10750" class="ax_default box_1" data-label="门禁菜单框">
+                <div id="u10750_div" class=""></div>
+                <div id="u10750_text" class="text " style="display:none; visibility: hidden">
+                  <p></p>
+                </div>
+              </div>
+
+              <!-- 智能门禁 (矩形) -->
+              <div id="u10751" class="ax_default _文本段落" data-label="智能门禁">
+                <div id="u10751_div" class=""></div>
+                <div id="u10751_text" class="text ">
+                  <p><span>操作日志</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 用能价格管理 (组合) -->
+      <div id="u10752" class="ax_default" data-label="用能价格管理" selectiongroup="u10669系统-二级" data-left="0" data-top="222" data-width="260" data-height="40">
+
+        <!-- 门禁菜单框 (矩形) -->
+        <div id="u10753" class="ax_default box_1" data-label="门禁菜单框">
+          <div id="u10753_div" class=""></div>
+          <div id="u10753_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- 智能门禁 (矩形) -->
+        <div id="u10754" class="ax_default _文本段落" data-label="智能门禁">
+          <div id="u10754_div" class=""></div>
+          <div id="u10754_text" class="text ">
+            <p><span>用能价格管理</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10755" class="ax_default _形状">
+          <img id="u10755_img" class="img " src="images/分区-用能分区管理/u7381.svg"/>
+          <div id="u10755_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+      <div id="u10669" style="display:none; visibility:hidden;"></div>
+
+      <!-- 上框 (矩形) -->
+      <div id="u10756" class="ax_default box_1" data-label="上框">
+        <div id="u10756_div" class=""></div>
+        <div id="u10756_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- 统计周期设置 (动态面板) -->
+      <div id="u10757" class="ax_default" data-label="统计周期设置">
+        <div id="u10757_state0" class="panel_state" data-label="State1" style="">
+          <div id="u10757_state0_content" class="panel_state_content">
+
+            <!-- 单元分区中继器 (中继器) -->
+            <div id="u10758" class="ax_default" data-label="单元分区中继器">
+              <script id="u10758_script" type="axure-repeater-template" data-label="单元分区中继器">
+
+                <!-- 适用范围 (矩形) -->
+                <div id="u10759" class="ax_default box_1 u10759" data-label="适用范围">
+                  <div id="u10759_div" class="u10759_div"></div>
+                  <div id="u10759_text" class="text u10759_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 编辑-分区 (矩形) -->
+                <div id="u10760" class="ax_default box_1 u10760" data-label="编辑-分区">
+                  <div id="u10760_div" class="u10760_div"></div>
+                  <div id="u10760_text" class="text u10760_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 方案名称 (矩形) -->
+                <div id="u10761" class="ax_default box_1 u10761" data-label="方案名称">
+                  <div id="u10761_div" class="u10761_div"></div>
+                  <div id="u10761_text" class="text u10761_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 序号 (矩形) -->
+                <div id="u10762" class="ax_default box_1 u10762" data-label="序号">
+                  <div id="u10762_div" class="u10762_div"></div>
+                  <div id="u10762_text" class="text u10762_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 新增-分区 (矩形) -->
+                <div id="u10763" class="ax_default box_1 u10763" data-label="新增-分区">
+                  <div id="u10763_div" class="u10763_div"></div>
+                  <div id="u10763_text" class="text u10763_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 删除-分区 (矩形) -->
+                <div id="u10764" class="ax_default box_1 u10764" data-label="删除-分区">
+                  <div id="u10764_div" class="u10764_div"></div>
+                  <div id="u10764_text" class="text u10764_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 定价类型 (矩形) -->
+                <div id="u10765" class="ax_default box_1 u10765" data-label="定价类型">
+                  <div id="u10765_div" class="u10765_div"></div>
+                  <div id="u10765_text" class="text u10765_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 方案价格 (矩形) -->
+                <div id="u10766" class="ax_default box_1 u10766" data-label="方案价格">
+                  <div id="u10766_div" class="u10766_div"></div>
+                  <div id="u10766_text" class="text u10766_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 用能科目 (矩形) -->
+                <div id="u10767" class="ax_default box_1 u10767" data-label="用能科目">
+                  <div id="u10767_div" class="u10767_div"></div>
+                  <div id="u10767_text" class="text u10767_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+              </script>
+              <div id="u10758-1" class="preeval" style="width: 1590px; height: 40px;">
+
+                <!-- 适用范围 (矩形) -->
+                <div id="u10759-1" class="ax_default box_1 u10759" data-label="适用范围" style="width: 180px; height: 40px; left: 480px; top: 0px;visibility: inherit">
+                  <div id="u10759-1_div" class="u10759_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10759-1_text" class="text u10759_text" style="visibility: inherit">
+                    <p><span>默认通用</span></p>
+                  </div>
+                </div>
+
+                <!-- 编辑-分区 (矩形) -->
+                <div id="u10760-1" class="ax_default box_1 u10760" data-label="编辑-分区" style="width: 60px; height: 40px; left: 1240px; top: 0px;visibility: inherit">
+                  <div id="u10760-1_div" class="u10760_div" style="width: 60px; height: 40px;visibility: inherit"></div>
+                  <div id="u10760-1_text" class="text u10760_text" style="visibility: inherit">
+                    <p><span>编辑</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案名称 (矩形) -->
+                <div id="u10761-1" class="ax_default box_1 u10761" data-label="方案名称" style="width: 220px; height: 40px; left: 80px; top: 0px;visibility: inherit">
+                  <div id="u10761-1_div" class="u10761_div" style="width: 220px; height: 40px;visibility: inherit"></div>
+                  <div id="u10761-1_text" class="text u10761_text" style="visibility: inherit">
+                    <p><span>供电复费率方案</span></p>
+                  </div>
+                </div>
+
+                <!-- 序号 (矩形) -->
+                <div id="u10762-1" class="ax_default box_1 u10762" data-label="序号" style="width: 80px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                  <div id="u10762-1_div" class="u10762_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                  <div id="u10762-1_text" class="text u10762_text" style="visibility: inherit">
+                    <p><span>1</span></p>
+                  </div>
+                </div>
+
+                <!-- 新增-分区 (矩形) -->
+                <div id="u10763-1" class="ax_default box_1 u10763" data-label="新增-分区" style="width: 98px; height: 40px; left: 1300px; top: 0px;visibility: inherit">
+                  <div id="u10763-1_div" class="u10763_div" style="width: 98px; height: 40px;visibility: inherit"></div>
+                  <div id="u10763-1_text" class="text u10763_text" style="visibility: inherit">
+                    <p><span>删除</span></p>
+                  </div>
+                </div>
+
+                <!-- 删除-分区 (矩形) -->
+                <div id="u10764-1" class="ax_default box_1 u10764" data-label="删除-分区" style="width: 192px; height: 40px; left: 1398px; top: 0px;visibility: inherit">
+                  <div id="u10764-1_div" class="u10764_div" style="width: 192px; height: 40px;visibility: inherit"></div>
+                  <div id="u10764-1_text" class="text u10764_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 定价类型 (矩形) -->
+                <div id="u10765-1" class="ax_default box_1 u10765" data-label="定价类型" style="width: 180px; height: 40px; left: 660px; top: 0px;visibility: inherit">
+                  <div id="u10765-1_div" class="u10765_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10765-1_text" class="text u10765_text" style="visibility: inherit">
+                    <p><span>复费率</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案价格 (矩形) -->
+                <div id="u10766-1" class="ax_default box_1 u10766" data-label="方案价格" style="width: 400px; height: 40px; left: 840px; top: 0px;visibility: inherit">
+                  <div id="u10766-1_div" class="u10766_div" style="width: 400px; height: 40px;visibility: inherit"></div>
+                  <div id="u10766-1_text" class="text u10766_text" style="visibility: inherit">
+                    <p><span>2/1.5/1/0.5（元/kWh）</span></p>
+                  </div>
+                </div>
+
+                <!-- 用能科目 (矩形) -->
+                <div id="u10767-1" class="ax_default box_1 u10767" data-label="用能科目" style="width: 180px; height: 40px; left: 300px; top: 0px;visibility: inherit">
+                  <div id="u10767-1_div" class="u10767_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10767-1_text" class="text u10767_text" style="visibility: inherit">
+                    <p><span>电</span></p>
+                  </div>
+                </div>
+              </div>
+              <div id="u10758-2" class="preeval" style="width: 1590px; height: 40px;">
+
+                <!-- 适用范围 (矩形) -->
+                <div id="u10759-2" class="ax_default box_1 u10759" data-label="适用范围" style="width: 180px; height: 40px; left: 480px; top: 0px;visibility: inherit">
+                  <div id="u10759-2_div" class="u10759_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10759-2_text" class="text u10759_text" style="visibility: inherit">
+                    <p><span>项目专属</span></p>
+                  </div>
+                </div>
+
+                <!-- 编辑-分区 (矩形) -->
+                <div id="u10760-2" class="ax_default box_1 u10760" data-label="编辑-分区" style="width: 60px; height: 40px; left: 1240px; top: 0px;visibility: inherit">
+                  <div id="u10760-2_div" class="u10760_div" style="width: 60px; height: 40px;visibility: inherit"></div>
+                  <div id="u10760-2_text" class="text u10760_text" style="visibility: inherit">
+                    <p><span>编辑</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案名称 (矩形) -->
+                <div id="u10761-2" class="ax_default box_1 u10761" data-label="方案名称" style="width: 220px; height: 40px; left: 80px; top: 0px;visibility: inherit">
+                  <div id="u10761-2_div" class="u10761_div" style="width: 220px; height: 40px;visibility: inherit"></div>
+                  <div id="u10761-2_text" class="text u10761_text" style="visibility: inherit">
+                    <p><span>供电单费率方案</span></p>
+                  </div>
+                </div>
+
+                <!-- 序号 (矩形) -->
+                <div id="u10762-2" class="ax_default box_1 u10762" data-label="序号" style="width: 80px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                  <div id="u10762-2_div" class="u10762_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                  <div id="u10762-2_text" class="text u10762_text" style="visibility: inherit">
+                    <p><span>2</span></p>
+                  </div>
+                </div>
+
+                <!-- 新增-分区 (矩形) -->
+                <div id="u10763-2" class="ax_default box_1 u10763" data-label="新增-分区" style="width: 98px; height: 40px; left: 1300px; top: 0px;visibility: inherit">
+                  <div id="u10763-2_div" class="u10763_div" style="width: 98px; height: 40px;visibility: inherit"></div>
+                  <div id="u10763-2_text" class="text u10763_text" style="visibility: inherit">
+                    <p><span>删除</span></p>
+                  </div>
+                </div>
+
+                <!-- 删除-分区 (矩形) -->
+                <div id="u10764-2" class="ax_default box_1 u10764" data-label="删除-分区" style="width: 192px; height: 40px; left: 1398px; top: 0px;visibility: inherit">
+                  <div id="u10764-2_div" class="u10764_div" style="width: 192px; height: 40px;visibility: inherit"></div>
+                  <div id="u10764-2_text" class="text u10764_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 定价类型 (矩形) -->
+                <div id="u10765-2" class="ax_default box_1 u10765" data-label="定价类型" style="width: 180px; height: 40px; left: 660px; top: 0px;visibility: inherit">
+                  <div id="u10765-2_div" class="u10765_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10765-2_text" class="text u10765_text" style="visibility: inherit">
+                    <p><span>单费率</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案价格 (矩形) -->
+                <div id="u10766-2" class="ax_default box_1 u10766" data-label="方案价格" style="width: 400px; height: 40px; left: 840px; top: 0px;visibility: inherit">
+                  <div id="u10766-2_div" class="u10766_div" style="width: 400px; height: 40px;visibility: inherit"></div>
+                  <div id="u10766-2_text" class="text u10766_text" style="visibility: inherit">
+                    <p><span>0.58（元/kWh）</span></p>
+                  </div>
+                </div>
+
+                <!-- 用能科目 (矩形) -->
+                <div id="u10767-2" class="ax_default box_1 u10767" data-label="用能科目" style="width: 180px; height: 40px; left: 300px; top: 0px;visibility: inherit">
+                  <div id="u10767-2_div" class="u10767_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10767-2_text" class="text u10767_text" style="visibility: inherit">
+                    <p><span>电</span></p>
+                  </div>
+                </div>
+              </div>
+              <div id="u10758-3" class="preeval" style="width: 1590px; height: 40px;">
+
+                <!-- 适用范围 (矩形) -->
+                <div id="u10759-3" class="ax_default box_1 u10759" data-label="适用范围" style="width: 180px; height: 40px; left: 480px; top: 0px;visibility: inherit">
+                  <div id="u10759-3_div" class="u10759_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10759-3_text" class="text u10759_text" style="visibility: inherit">
+                    <p><span>项目专属</span></p>
+                  </div>
+                </div>
+
+                <!-- 编辑-分区 (矩形) -->
+                <div id="u10760-3" class="ax_default box_1 u10760" data-label="编辑-分区" style="width: 60px; height: 40px; left: 1240px; top: 0px;visibility: inherit">
+                  <div id="u10760-3_div" class="u10760_div" style="width: 60px; height: 40px;visibility: inherit"></div>
+                  <div id="u10760-3_text" class="text u10760_text" style="visibility: inherit">
+                    <p><span>编辑</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案名称 (矩形) -->
+                <div id="u10761-3" class="ax_default box_1 u10761" data-label="方案名称" style="width: 220px; height: 40px; left: 80px; top: 0px;visibility: inherit">
+                  <div id="u10761-3_div" class="u10761_div" style="width: 220px; height: 40px;visibility: inherit"></div>
+                  <div id="u10761-3_text" class="text u10761_text" style="visibility: inherit">
+                    <p><span>供水价格方案</span></p>
+                  </div>
+                </div>
+
+                <!-- 序号 (矩形) -->
+                <div id="u10762-3" class="ax_default box_1 u10762" data-label="序号" style="width: 80px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                  <div id="u10762-3_div" class="u10762_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                  <div id="u10762-3_text" class="text u10762_text" style="visibility: inherit">
+                    <p><span>3</span></p>
+                  </div>
+                </div>
+
+                <!-- 新增-分区 (矩形) -->
+                <div id="u10763-3" class="ax_default box_1 u10763" data-label="新增-分区" style="width: 98px; height: 40px; left: 1300px; top: 0px;visibility: inherit">
+                  <div id="u10763-3_div" class="u10763_div" style="width: 98px; height: 40px;visibility: inherit"></div>
+                  <div id="u10763-3_text" class="text u10763_text" style="visibility: inherit">
+                    <p><span>删除</span></p>
+                  </div>
+                </div>
+
+                <!-- 删除-分区 (矩形) -->
+                <div id="u10764-3" class="ax_default box_1 u10764" data-label="删除-分区" style="width: 192px; height: 40px; left: 1398px; top: 0px;visibility: inherit">
+                  <div id="u10764-3_div" class="u10764_div" style="width: 192px; height: 40px;visibility: inherit"></div>
+                  <div id="u10764-3_text" class="text u10764_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 定价类型 (矩形) -->
+                <div id="u10765-3" class="ax_default box_1 u10765" data-label="定价类型" style="width: 180px; height: 40px; left: 660px; top: 0px;visibility: inherit">
+                  <div id="u10765-3_div" class="u10765_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10765-3_text" class="text u10765_text" style="visibility: inherit">
+                    <p><span>单费率</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案价格 (矩形) -->
+                <div id="u10766-3" class="ax_default box_1 u10766" data-label="方案价格" style="width: 400px; height: 40px; left: 840px; top: 0px;visibility: inherit">
+                  <div id="u10766-3_div" class="u10766_div" style="width: 400px; height: 40px;visibility: inherit"></div>
+                  <div id="u10766-3_text" class="text u10766_text" style="visibility: inherit">
+                    <p><span>2.85&nbsp; (元/m3)</span></p>
+                  </div>
+                </div>
+
+                <!-- 用能科目 (矩形) -->
+                <div id="u10767-3" class="ax_default box_1 u10767" data-label="用能科目" style="width: 180px; height: 40px; left: 300px; top: 0px;visibility: inherit">
+                  <div id="u10767-3_div" class="u10767_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10767-3_text" class="text u10767_text" style="visibility: inherit">
+                    <p><span>自来水</span></p>
+                  </div>
+                </div>
+              </div>
+              <div id="u10758-4" class="preeval" style="width: 1590px; height: 40px;">
+
+                <!-- 适用范围 (矩形) -->
+                <div id="u10759-4" class="ax_default box_1 u10759" data-label="适用范围" style="width: 180px; height: 40px; left: 480px; top: 0px;visibility: inherit">
+                  <div id="u10759-4_div" class="u10759_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10759-4_text" class="text u10759_text" style="visibility: inherit">
+                    <p><span>项目专属</span></p>
+                  </div>
+                </div>
+
+                <!-- 编辑-分区 (矩形) -->
+                <div id="u10760-4" class="ax_default box_1 u10760" data-label="编辑-分区" style="width: 60px; height: 40px; left: 1240px; top: 0px;visibility: inherit">
+                  <div id="u10760-4_div" class="u10760_div" style="width: 60px; height: 40px;visibility: inherit"></div>
+                  <div id="u10760-4_text" class="text u10760_text" style="visibility: inherit">
+                    <p><span>编辑</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案名称 (矩形) -->
+                <div id="u10761-4" class="ax_default box_1 u10761" data-label="方案名称" style="width: 220px; height: 40px; left: 80px; top: 0px;visibility: inherit">
+                  <div id="u10761-4_div" class="u10761_div" style="width: 220px; height: 40px;visibility: inherit"></div>
+                  <div id="u10761-4_text" class="text u10761_text" style="visibility: inherit">
+                    <p><span>燃气价格方案</span></p>
+                  </div>
+                </div>
+
+                <!-- 序号 (矩形) -->
+                <div id="u10762-4" class="ax_default box_1 u10762" data-label="序号" style="width: 80px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                  <div id="u10762-4_div" class="u10762_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                  <div id="u10762-4_text" class="text u10762_text" style="visibility: inherit">
+                    <p><span>4</span></p>
+                  </div>
+                </div>
+
+                <!-- 新增-分区 (矩形) -->
+                <div id="u10763-4" class="ax_default box_1 u10763" data-label="新增-分区" style="width: 98px; height: 40px; left: 1300px; top: 0px;visibility: inherit">
+                  <div id="u10763-4_div" class="u10763_div" style="width: 98px; height: 40px;visibility: inherit"></div>
+                  <div id="u10763-4_text" class="text u10763_text" style="visibility: inherit">
+                    <p><span>删除</span></p>
+                  </div>
+                </div>
+
+                <!-- 删除-分区 (矩形) -->
+                <div id="u10764-4" class="ax_default box_1 u10764" data-label="删除-分区" style="width: 192px; height: 40px; left: 1398px; top: 0px;visibility: inherit">
+                  <div id="u10764-4_div" class="u10764_div" style="width: 192px; height: 40px;visibility: inherit"></div>
+                  <div id="u10764-4_text" class="text u10764_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 定价类型 (矩形) -->
+                <div id="u10765-4" class="ax_default box_1 u10765" data-label="定价类型" style="width: 180px; height: 40px; left: 660px; top: 0px;visibility: inherit">
+                  <div id="u10765-4_div" class="u10765_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10765-4_text" class="text u10765_text" style="visibility: inherit">
+                    <p><span>单费率</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案价格 (矩形) -->
+                <div id="u10766-4" class="ax_default box_1 u10766" data-label="方案价格" style="width: 400px; height: 40px; left: 840px; top: 0px;visibility: inherit">
+                  <div id="u10766-4_div" class="u10766_div" style="width: 400px; height: 40px;visibility: inherit"></div>
+                  <div id="u10766-4_text" class="text u10766_text" style="visibility: inherit">
+                    <p><span>3.50&nbsp; (元/m3)</span></p>
+                  </div>
+                </div>
+
+                <!-- 用能科目 (矩形) -->
+                <div id="u10767-4" class="ax_default box_1 u10767" data-label="用能科目" style="width: 180px; height: 40px; left: 300px; top: 0px;visibility: inherit">
+                  <div id="u10767-4_div" class="u10767_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10767-4_text" class="text u10767_text" style="visibility: inherit">
+                    <p><span>燃气</span></p>
+                  </div>
+                </div>
+              </div>
+              <div id="u10758-5" class="preeval" style="width: 1590px; height: 40px;">
+
+                <!-- 适用范围 (矩形) -->
+                <div id="u10759-5" class="ax_default box_1 u10759" data-label="适用范围" style="width: 180px; height: 40px; left: 480px; top: 0px;visibility: inherit">
+                  <div id="u10759-5_div" class="u10759_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10759-5_text" class="text u10759_text" style="visibility: inherit">
+                    <p><span>项目专属</span></p>
+                  </div>
+                </div>
+
+                <!-- 编辑-分区 (矩形) -->
+                <div id="u10760-5" class="ax_default box_1 u10760" data-label="编辑-分区" style="width: 60px; height: 40px; left: 1240px; top: 0px;visibility: inherit">
+                  <div id="u10760-5_div" class="u10760_div" style="width: 60px; height: 40px;visibility: inherit"></div>
+                  <div id="u10760-5_text" class="text u10760_text" style="visibility: inherit">
+                    <p><span>编辑</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案名称 (矩形) -->
+                <div id="u10761-5" class="ax_default box_1 u10761" data-label="方案名称" style="width: 220px; height: 40px; left: 80px; top: 0px;visibility: inherit">
+                  <div id="u10761-5_div" class="u10761_div" style="width: 220px; height: 40px;visibility: inherit"></div>
+                  <div id="u10761-5_text" class="text u10761_text" style="visibility: inherit">
+                    <p><span>供冷/热价格方案</span></p>
+                  </div>
+                </div>
+
+                <!-- 序号 (矩形) -->
+                <div id="u10762-5" class="ax_default box_1 u10762" data-label="序号" style="width: 80px; height: 40px; left: 0px; top: 0px;visibility: inherit">
+                  <div id="u10762-5_div" class="u10762_div" style="width: 80px; height: 40px;visibility: inherit"></div>
+                  <div id="u10762-5_text" class="text u10762_text" style="visibility: inherit">
+                    <p><span>5</span></p>
+                  </div>
+                </div>
+
+                <!-- 新增-分区 (矩形) -->
+                <div id="u10763-5" class="ax_default box_1 u10763" data-label="新增-分区" style="width: 98px; height: 40px; left: 1300px; top: 0px;visibility: inherit">
+                  <div id="u10763-5_div" class="u10763_div" style="width: 98px; height: 40px;visibility: inherit"></div>
+                  <div id="u10763-5_text" class="text u10763_text" style="visibility: inherit">
+                    <p><span>删除</span></p>
+                  </div>
+                </div>
+
+                <!-- 删除-分区 (矩形) -->
+                <div id="u10764-5" class="ax_default box_1 u10764" data-label="删除-分区" style="width: 192px; height: 40px; left: 1398px; top: 0px;visibility: inherit">
+                  <div id="u10764-5_div" class="u10764_div" style="width: 192px; height: 40px;visibility: inherit"></div>
+                  <div id="u10764-5_text" class="text u10764_text" style="display:none; visibility: hidden">
+                    <p></p>
+                  </div>
+                </div>
+
+                <!-- 定价类型 (矩形) -->
+                <div id="u10765-5" class="ax_default box_1 u10765" data-label="定价类型" style="width: 180px; height: 40px; left: 660px; top: 0px;visibility: inherit">
+                  <div id="u10765-5_div" class="u10765_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10765-5_text" class="text u10765_text" style="visibility: inherit">
+                    <p><span>单费率</span></p>
+                  </div>
+                </div>
+
+                <!-- 方案价格 (矩形) -->
+                <div id="u10766-5" class="ax_default box_1 u10766" data-label="方案价格" style="width: 400px; height: 40px; left: 840px; top: 0px;visibility: inherit">
+                  <div id="u10766-5_div" class="u10766_div" style="width: 400px; height: 40px;visibility: inherit"></div>
+                  <div id="u10766-5_text" class="text u10766_text" style="visibility: inherit">
+                    <p><span>23.50（元/m2）</span></p>
+                  </div>
+                </div>
+
+                <!-- 用能科目 (矩形) -->
+                <div id="u10767-5" class="ax_default box_1 u10767" data-label="用能科目" style="width: 180px; height: 40px; left: 300px; top: 0px;visibility: inherit">
+                  <div id="u10767-5_div" class="u10767_div" style="width: 180px; height: 40px;visibility: inherit"></div>
+                  <div id="u10767-5_text" class="text u10767_text" style="visibility: inherit">
+                    <p><span>冷热源</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10768" class="ax_default box_1">
+        <div id="u10768_div" class=""></div>
+        <div id="u10768_text" class="text ">
+          <p><span>方案名称</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10769" class="ax_default box_1">
+        <div id="u10769_div" class=""></div>
+        <div id="u10769_text" class="text ">
+          <p><span>操作</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10770" class="ax_default box_1">
+        <div id="u10770_div" class=""></div>
+        <div id="u10770_text" class="text ">
+          <p><span>适用范围</span></p>
+        </div>
+      </div>
+
+      <!-- s_sh (矩形) -->
+      <div id="u10771" class="ax_default box_1" data-label="s_sh">
+        <div id="u10771_div" class=""></div>
+        <div id="u10771_text" class="text ">
+          <p><span>序号</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10772" class="ax_default box_1">
+        <div id="u10772_div" class=""></div>
+        <div id="u10772_text" class="text ">
+          <p><span>方案价格</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10773" class="ax_default box_1">
+        <div id="u10773_div" class=""></div>
+        <div id="u10773_text" class="text ">
+          <p><span>价格类型</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10774" class="ax_default box_1">
+        <div id="u10774_div" class=""></div>
+        <div id="u10774_text" class="text ">
+          <p><span>用能价格方案</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u10775" class="ax_default" data-left="300" data-top="195" data-width="120" data-height="35">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u10776" class="ax_default box_11">
+          <div id="u10776_div" class=""></div>
+          <div id="u10776_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u10777" class="ax_default _三级标题">
+          <div id="u10777_div" class=""></div>
+          <div id="u10777_text" class="text ">
+            <p><span>新增价格方案</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (形状) -->
+        <div id="u10778" class="ax_default icon">
+          <img id="u10778_img" class="img " src="images/考核分析-班组用能/u6408.svg"/>
+          <div id="u10778_text" class="text " style="display:none; visibility: hidden">
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10779" class="ax_default box_1">
+        <div id="u10779_div" class=""></div>
+        <div id="u10779_text" class="text ">
+          <p><span>所属科目</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u10780" class="ax_default box_1">
+        <div id="u10780_div" class=""></div>
+        <div id="u10780_text" class="text " style="display:none; visibility: hidden">
+          <p></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (下拉列表) -->
+      <div id="u10781" class="ax_default droplist">
+        <img id="u10781_img" class="img " src="images/实时监测-计量仪表/u2361.svg"/>
+        <select id="u10781_input" class="u10781_input">
+          <option class="u10781_input_option" value="XX企业用能项目">XX企业用能项目</option>
+          <option class="u10781_input_option" value="XX建筑用能项目">XX建筑用能项目</option>
+        </select>
+      </div>
+    </div>
+    <script src="resources/scripts/axure/ios.js"></script>
+  </body>
+</html>

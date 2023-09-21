@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="46px" height="6px" preserveAspectRatio="xMinYMid meet" viewBox="1180 739  46 4" xmlns="http://www.w3.org/2000/svg">
-  <g transform="matrix(-1 0 0 -1 2406 1482 )">
-    <path d="M 1209.3 726.5  L 1203 720.5  L 1196.7 726.5  L 1209.3 726.5  Z M 1206.9 725.5  L 1199.1 725.5  L 1203 722  L 1206.9 725.5  Z M 1209.3 731.5  L 1203 725.5  L 1196.7 731.5  L 1209.3 731.5  Z M 1206.9 730.5  L 1199.1 730.5  L 1203 727  L 1206.9 730.5  Z " fill-rule="nonzero" fill="#f20201" stroke="none" transform="matrix(6.12303176911189E-17 1 -1 6.12303176911189E-17 1943.5 -461.5 )" />
-    <path d="M 1203 731.5  L 1203 760.5  " stroke-width="1" stroke="#f20201" fill="none" transform="matrix(6.12303176911189E-17 1 -1 6.12303176911189E-17 1943.5 -461.5 )" />
+<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="46px" height="6px" preserveAspectRatio="xMinYMid meet" viewBox="1180 653  46 4" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(-1 0 0 -1 2406 1310 )">
+    <path d="M 1209.3 640.5  L 1203 634.5  L 1196.7 640.5  L 1209.3 640.5  Z M 1206.9 639.5  L 1199.1 639.5  L 1203 636  L 1206.9 639.5  Z M 1209.3 645.5  L 1203 639.5  L 1196.7 645.5  L 1209.3 645.5  Z M 1206.9 644.5  L 1199.1 644.5  L 1203 641  L 1206.9 644.5  Z " fill-rule="nonzero" fill="#f20201" stroke="none" transform="matrix(6.12303176911189E-17 1 -1 6.12303176911189E-17 1857.5 -547.5 )" />
+    <path d="M 1203 645.5  L 1203 674.5  " stroke-width="1" stroke="#f20201" fill="none" transform="matrix(6.12303176911189E-17 1 -1 6.12303176911189E-17 1857.5 -547.5 )" />
   </g>
 </svg>

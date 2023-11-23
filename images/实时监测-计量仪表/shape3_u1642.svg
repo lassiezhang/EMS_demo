@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="11px" height="43px" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient gradientUnits="userSpaceOnUse" x1="0.191743119266" y1="0.0179316096749957" x2="0.191743119266" y2="41.9061718098418" id="LinearGradient6768">
-      <stop id="Stop6769" stop-color="#6895b4" offset="0" />
-      <stop id="Stop6770" stop-color="#94c7ec" offset="0.15" />
-      <stop id="Stop6771" stop-color="#cae1f4" offset="0.25" />
-      <stop id="Stop6772" stop-color="#77aace" offset="0.44" />
-      <stop id="Stop6773" stop-color="#6997b7" offset="0.6" />
-      <stop id="Stop6774" stop-color="#587f9a" offset="0.8" />
-      <stop id="Stop6775" stop-color="#50748d" offset="0.97" />
-      <stop id="Stop6776" stop-color="#6c9bbb" offset="1" />
+    <linearGradient gradientUnits="userSpaceOnUse" x1="0.191743119266" y1="0.0179316096749957" x2="0.191743119266" y2="41.9061718098418" id="LinearGradient8694">
+      <stop id="Stop8695" stop-color="#6895b4" offset="0" />
+      <stop id="Stop8696" stop-color="#94c7ec" offset="0.15" />
+      <stop id="Stop8697" stop-color="#cae1f4" offset="0.25" />
+      <stop id="Stop8698" stop-color="#77aace" offset="0.44" />
+      <stop id="Stop8699" stop-color="#6997b7" offset="0.6" />
+      <stop id="Stop8700" stop-color="#587f9a" offset="0.8" />
+      <stop id="Stop8701" stop-color="#50748d" offset="0.97" />
+      <stop id="Stop8702" stop-color="#6c9bbb" offset="1" />
     </linearGradient>
   </defs>
   <g transform="matrix(1 0 0 1 -388 -576 )">
-    <path d="M 0.164397760475326 42  L 0.164397760475326 1  L 10.6621696619493 1  L 10.6621696619493 42  L 0.164397760475326 42  Z " fill-rule="nonzero" fill="url(#LinearGradient6768)" stroke="none" transform="matrix(1 0 0 1 388 576 )" />
+    <path d="M 0.164397760475326 42  L 0.164397760475326 1  L 10.6621696619493 1  L 10.6621696619493 42  L 0.164397760475326 42  Z " fill-rule="nonzero" fill="url(#LinearGradient8694)" stroke="none" transform="matrix(1 0 0 1 388 576 )" />
   </g>
 </svg>

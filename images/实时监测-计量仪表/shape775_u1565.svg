@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient gradientUnits="userSpaceOnUse" x1="15.9999999999999" y1="7.00000000000003" x2="0" y2="7.00000000000003" id="LinearGradient6652">
-      <stop id="Stop6653" stop-color="#4d7ca5" offset="0" />
-      <stop id="Stop6654" stop-color="#78aada" offset="0.15" />
-      <stop id="Stop6655" stop-color="#c0d3ea" offset="0.25" />
-      <stop id="Stop6656" stop-color="#598ebc" offset="0.44" />
-      <stop id="Stop6657" stop-color="#4f7ea7" offset="0.6" />
-      <stop id="Stop6658" stop-color="#416a8d" offset="0.8" />
-      <stop id="Stop6659" stop-color="#3b6080" offset="0.97" />
-      <stop id="Stop6660" stop-color="#5181ab" offset="1" />
+    <linearGradient gradientUnits="userSpaceOnUse" x1="15.9999999999999" y1="7.00000000000003" x2="0" y2="7.00000000000003" id="LinearGradient8578">
+      <stop id="Stop8579" stop-color="#4d7ca5" offset="0" />
+      <stop id="Stop8580" stop-color="#78aada" offset="0.15" />
+      <stop id="Stop8581" stop-color="#c0d3ea" offset="0.25" />
+      <stop id="Stop8582" stop-color="#598ebc" offset="0.44" />
+      <stop id="Stop8583" stop-color="#4f7ea7" offset="0.6" />
+      <stop id="Stop8584" stop-color="#416a8d" offset="0.8" />
+      <stop id="Stop8585" stop-color="#3b6080" offset="0.97" />
+      <stop id="Stop8586" stop-color="#5181ab" offset="1" />
     </linearGradient>
   </defs>
   <g transform="matrix(1 0 0 1 -292 -556 )">
-    <path d="M 1 14  L 14.6504587155962 14  L 14.6504587155962 0.300917431192659  L 1 0.300917431192659  L 1 14  Z " fill-rule="nonzero" fill="url(#LinearGradient6652)" stroke="none" transform="matrix(1 0 0 1 292 556 )" />
+    <path d="M 1 14  L 14.6504587155962 14  L 14.6504587155962 0.300917431192659  L 1 0.300917431192659  L 1 14  Z " fill-rule="nonzero" fill="url(#LinearGradient8578)" stroke="none" transform="matrix(1 0 0 1 292 556 )" />
   </g>
 </svg>

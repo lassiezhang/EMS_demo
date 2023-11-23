@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="3px" height="2px" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient gradientUnits="userSpaceOnUse" x1="133231.59127051" y1="148102.144254935" x2="133006.760879523" y2="148102.144254935" id="LinearGradient5846">
-      <stop id="Stop5847" stop-color="#c4aa84" offset="0" />
-      <stop id="Stop5848" stop-color="#ffe0b3" offset="0.15" />
-      <stop id="Stop5849" stop-color="#ffeed7" offset="0.25" />
-      <stop id="Stop5850" stop-color="#dfc297" offset="0.44" />
-      <stop id="Stop5851" stop-color="#c7ad86" offset="0.6" />
-      <stop id="Stop5852" stop-color="#a89170" offset="0.8" />
-      <stop id="Stop5853" stop-color="#998566" offset="0.97" />
-      <stop id="Stop5854" stop-color="#cbb189" offset="1" />
+    <linearGradient gradientUnits="userSpaceOnUse" x1="133231.59127051" y1="148102.144254935" x2="133006.760879523" y2="148102.144254935" id="LinearGradient7772">
+      <stop id="Stop7773" stop-color="#c4aa84" offset="0" />
+      <stop id="Stop7774" stop-color="#ffe0b3" offset="0.15" />
+      <stop id="Stop7775" stop-color="#ffeed7" offset="0.25" />
+      <stop id="Stop7776" stop-color="#dfc297" offset="0.44" />
+      <stop id="Stop7777" stop-color="#c7ad86" offset="0.6" />
+      <stop id="Stop7778" stop-color="#a89170" offset="0.8" />
+      <stop id="Stop7779" stop-color="#998566" offset="0.97" />
+      <stop id="Stop7780" stop-color="#cbb189" offset="1" />
     </linearGradient>
   </defs>
   <g transform="matrix(1 0 0 1 -443 -679 )">
-    <path d="M 1.74036697247703 1.95779816513766  C 1.29999999999995 1.95779816513766  0.933027522935731 1.66422018348624  0.933027522935731 1.22385321100921  C 0.933027522935731 0.783486238532134  1.29999999999995 0.416513761467911  1.74036697247703 0.416513761467911  C 2.18073394495406 0.416513761467911  2.47431192660548 0.783486238532134  2.47431192660548 1.22385321100921  C 2.47431192660548 1.66422018348624  2.18073394495406 1.95779816513766  1.74036697247703 1.95779816513766  Z " fill-rule="nonzero" fill="url(#LinearGradient5846)" stroke="none" transform="matrix(1 0 0 1 443 679 )" />
+    <path d="M 1.74036697247703 1.95779816513766  C 1.29999999999995 1.95779816513766  0.933027522935731 1.66422018348624  0.933027522935731 1.22385321100921  C 0.933027522935731 0.783486238532134  1.29999999999995 0.416513761467911  1.74036697247703 0.416513761467911  C 2.18073394495406 0.416513761467911  2.47431192660548 0.783486238532134  2.47431192660548 1.22385321100921  C 2.47431192660548 1.66422018348624  2.18073394495406 1.95779816513766  1.74036697247703 1.95779816513766  Z " fill-rule="nonzero" fill="url(#LinearGradient7772)" stroke="none" transform="matrix(1 0 0 1 443 679 )" />
   </g>
 </svg>

@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="11px" height="14px" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient gradientUnits="userSpaceOnUse" x1="5.70370370370371" y1="14" x2="5.7037037037034" y2="0.666666666666615" id="LinearGradient6200">
-      <stop id="Stop6201" stop-color="#d7d8d9" offset="0" />
-      <stop id="Stop6202" stop-color="#e4e5e6" offset="0.2" />
-      <stop id="Stop6203" stop-color="#fcfdfe" offset="0.4" />
-      <stop id="Stop6204" stop-color="#fcfdfe" offset="0.6" />
-      <stop id="Stop6205" stop-color="#e4e5e6" offset="0.8" />
-      <stop id="Stop6206" stop-color="#d7d8d9" offset="1" />
+    <linearGradient gradientUnits="userSpaceOnUse" x1="5.70370370370371" y1="14" x2="5.7037037037034" y2="0.666666666666615" id="LinearGradient8126">
+      <stop id="Stop8127" stop-color="#d7d8d9" offset="0" />
+      <stop id="Stop8128" stop-color="#e4e5e6" offset="0.2" />
+      <stop id="Stop8129" stop-color="#fcfdfe" offset="0.4" />
+      <stop id="Stop8130" stop-color="#fcfdfe" offset="0.6" />
+      <stop id="Stop8131" stop-color="#e4e5e6" offset="0.8" />
+      <stop id="Stop8132" stop-color="#d7d8d9" offset="1" />
     </linearGradient>
   </defs>
   <g transform="matrix(1 0 0 1 -532 -570 )">
-    <path d="M 0.178899082568819 13.9559633027523  L 0.178899082568819 0.744954128440327  L 10 0.744954128440327  L 10 13.9559633027523  L 0.178899082568819 13.9559633027523  Z " fill-rule="nonzero" fill="url(#LinearGradient6200)" stroke="none" transform="matrix(1 0 0 1 532 570 )" />
+    <path d="M 0.178899082568819 13.9559633027523  L 0.178899082568819 0.744954128440327  L 10 0.744954128440327  L 10 13.9559633027523  L 0.178899082568819 13.9559633027523  Z " fill-rule="nonzero" fill="url(#LinearGradient8126)" stroke="none" transform="matrix(1 0 0 1 532 570 )" />
   </g>
 </svg>

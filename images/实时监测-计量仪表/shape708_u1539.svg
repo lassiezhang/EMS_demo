@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="4px" height="4px" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient gradientUnits="userSpaceOnUse" x1="35542.6439352274" y1="16502.104643293" x2="35170.3429784304" y2="16502.104643293" id="LinearGradient4507">
-      <stop id="Stop4508" stop-color="#424141" offset="0" />
-      <stop id="Stop4509" stop-color="#6d6c6c" offset="0.15" />
-      <stop id="Stop4510" stop-color="#bcbcbc" offset="0.25" />
-      <stop id="Stop4511" stop-color="#4d4b4b" offset="0.52" />
-      <stop id="Stop4512" stop-color="#434242" offset="0.69" />
-      <stop id="Stop4513" stop-color="#3f3e3e" offset="0.8" />
-      <stop id="Stop4514" stop-color="#3b3a3a" offset="0.97" />
-      <stop id="Stop4515" stop-color="#454444" offset="1" />
+    <linearGradient gradientUnits="userSpaceOnUse" x1="35542.6439352274" y1="16502.104643293" x2="35170.3429784304" y2="16502.104643293" id="LinearGradient6440">
+      <stop id="Stop6441" stop-color="#424141" offset="0" />
+      <stop id="Stop6442" stop-color="#6d6c6c" offset="0.15" />
+      <stop id="Stop6443" stop-color="#bcbcbc" offset="0.25" />
+      <stop id="Stop6444" stop-color="#4d4b4b" offset="0.52" />
+      <stop id="Stop6445" stop-color="#434242" offset="0.69" />
+      <stop id="Stop6446" stop-color="#3f3e3e" offset="0.8" />
+      <stop id="Stop6447" stop-color="#3b3a3a" offset="0.97" />
+      <stop id="Stop6448" stop-color="#454444" offset="1" />
     </linearGradient>
   </defs>
   <g transform="matrix(1 0 0 1 -1211 -376 )">
-    <path d="M 0.745871559633088 3.77247706422025  L 0.745871559633088 0.469724770642244  L 3.38807339449545 0.469724770642244  L 3.38807339449545 3.77247706422025  L 0.745871559633088 3.77247706422025  Z " fill-rule="nonzero" fill="url(#LinearGradient4507)" stroke="none" transform="matrix(1 0 0 1 1211 376 )" />
+    <path d="M 0.745871559633088 3.77247706422025  L 0.745871559633088 0.469724770642244  L 3.38807339449545 0.469724770642244  L 3.38807339449545 3.77247706422025  L 0.745871559633088 3.77247706422025  Z " fill-rule="nonzero" fill="url(#LinearGradient6440)" stroke="none" transform="matrix(1 0 0 1 1211 376 )" />
   </g>
 </svg>

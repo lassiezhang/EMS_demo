@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="5px" height="22px" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient gradientUnits="userSpaceOnUse" x1="292.691306913162" y1="784.308168468907" x2="292.691306913162" y2="1188.14672493041" id="LinearGradient5112">
-      <stop id="Stop5113" stop-color="#b45255" offset="0" />
-      <stop id="Stop5114" stop-color="#ec7d80" offset="0.15" />
-      <stop id="Stop5115" stop-color="#f4c1c2" offset="0.25" />
-      <stop id="Stop5116" stop-color="#ce5e62" offset="0.44" />
-      <stop id="Stop5117" stop-color="#b75356" offset="0.6" />
-      <stop id="Stop5118" stop-color="#9a4548" offset="0.8" />
-      <stop id="Stop5119" stop-color="#8d3f41" offset="0.97" />
-      <stop id="Stop5120" stop-color="#bb5559" offset="1" />
+    <linearGradient gradientUnits="userSpaceOnUse" x1="292.691306913162" y1="784.308168468907" x2="292.691306913162" y2="1188.14672493041" id="LinearGradient7045">
+      <stop id="Stop7046" stop-color="#b45255" offset="0" />
+      <stop id="Stop7047" stop-color="#ec7d80" offset="0.15" />
+      <stop id="Stop7048" stop-color="#f4c1c2" offset="0.25" />
+      <stop id="Stop7049" stop-color="#ce5e62" offset="0.44" />
+      <stop id="Stop7050" stop-color="#b75356" offset="0.6" />
+      <stop id="Stop7051" stop-color="#9a4548" offset="0.8" />
+      <stop id="Stop7052" stop-color="#8d3f41" offset="0.97" />
+      <stop id="Stop7053" stop-color="#bb5559" offset="1" />
     </linearGradient>
   </defs>
   <g transform="matrix(1 0 0 1 -456 -585 )">
-    <path d="M 1 21.0374695982893  L 1 0.94173481546774  L 4.30908541860502 0.94173481546774  C 4.60902175864715 0.94173481546774  4.90895809868925 1.24167115550986  5 1.54160749555196  L 5 20.4375969182051  C 4.90895809868925 20.7375332582472  4.60902175864715 21.0374695982893  4.30908541860502 21.0374695982893  L 1 21.0374695982893  Z " fill-rule="nonzero" fill="url(#LinearGradient5112)" stroke="none" transform="matrix(1 0 0 1 456 585 )" />
+    <path d="M 1 21.0374695982893  L 1 0.94173481546774  L 4.30908541860502 0.94173481546774  C 4.60902175864715 0.94173481546774  4.90895809868925 1.24167115550986  5 1.54160749555196  L 5 20.4375969182051  C 4.90895809868925 20.7375332582472  4.60902175864715 21.0374695982893  4.30908541860502 21.0374695982893  L 1 21.0374695982893  Z " fill-rule="nonzero" fill="url(#LinearGradient7045)" stroke="none" transform="matrix(1 0 0 1 456 585 )" />
   </g>
 </svg>
